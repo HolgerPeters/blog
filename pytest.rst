@@ -42,7 +42,18 @@ like this:
     self assert: (full includes: 5).
     self assert: (full includes: 6)
 
-Python unittest looks kind of similar (it is the port of a port after all):
+Or rather, as in Smalltalk, all development takes place in a method browser, a
+screenshot give you a better impression of the SUnit experience:
+
+.. figure:: static/smalltalkmethodbrowser.png
+   :alt: Method browser in Smalltalk
+
+   In Smalltalk, editing takes place in a central IDE with a class and method
+   browser.
+
+Python unittest looks kind of similar to this, with the difference that class
+and method definition appear in the same file (it is the port of a port after
+all):
 
 .. code-block:: python
 
