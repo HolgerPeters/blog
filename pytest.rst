@@ -3,7 +3,7 @@ Why I use py.test
 =================
 
 :date: 2015-10-10 20:00
-:modified: 2015-10-10 20:00
+:modified: 2015-10-25 13:20
 :tags: testing, python
 :category: python
 :summary:  Writing readable and maintainable unit tests is crucial to the success of your Python project. For Python, the unittest module, nosetests and py.test are the most commonly used framework for writing unit tests, and so when you start a project, if no one takes the decision for you, you will have to choose between the three. Over the years, I have become a huge fan of ``py.test``, a mature and well-maintained testing package for Python. That's why I would like to summarize the reasons for me liking ``py.test`` and explain which features make it an indispensable tool for Python development.
@@ -136,6 +136,81 @@ message.  I cannot emphasize this enough. Instead of
 ``self.assertListEqual(a, b)``, we can just type ``assert a == b``,
 and ``assert foo()`` replaces ``self.assertTrue(foo())``.
 
+Pytest has accumulated lot's of helpful features for getting the best
+from testing. Some of which are:
+
+Reporting Test Durations
+------------------------
+
+Using ``--durations=10`` gives you a list of the 10 slowest tests.
+This is great if you are aiming for a quick test execution.  Identify
+the slowest tests of your test suite and either make them run faster
+or mark them as slow tests that you will only run on your CI server or
+on demand while you continue to benefit from fast-feedback from your
+fast running tests on your development machine.
+
+Turning Warnings into Exceptions
+--------------------------------
+
+Using ``--strict`` as an argument to py.test will turn Python warnings
+into errors. This is great if you want to trace back the source of
+warnings (with a stacktrace), for example to get rid of all
+deprecation warnings from your favourite library.
+
+Running Previously Failed Tests Only
+------------------------------------
+
+Running last failures first (or only previously failed tests) ``--ff``
+(run all tests but the last failure first) and ``--lf`` (rerun only
+the tests that failed at the last run) are great when you are working
+on getting a test to run.
+
+Show Local Variables
+--------------------
+
+Running ``py.test`` with the ``-l`` flag will print out a list of
+local variables with their corresponding values when a test fails:
+
+
+.. code-block:: python
+
+   def test_foo():
+       x = 1
+       b = "a"
+       assert x == len(b)
+       assert 2 == len(b)  # <- fail
+
+This test will yield an informative traceback::
+
+        % py.test -l test_f.py
+        ================== test session starts ===================
+        platform darwin -- Python 3.4.3, pytest-2.8.2, py-1.4.30, pluggy-0.3.1
+        collected 1 items
+
+        test_f.py F
+
+        ======================== FAILURES ========================
+        ________________________ test_foo ________________________
+
+            def test_foo():
+                x = 1
+                b = "a"
+                assert x == len(b)
+        h       assert 2 == len(b)
+        E       assert 2 == 1
+        E        +  where 1 = len('a')
+
+        b          = 'a'
+        x          = 1
+
+        test_f.py:7: AssertionError
+        ================ 1 failed in 0.01 seconds ================
+
+so
+
+Plugins
+=======
+
 What is also great about pytest are the plugins available for it.
 
 pytest-xdist
@@ -148,9 +223,9 @@ reduce the runtime of your unit tests. Just::
    pip install pytest-xdist
    py.test -n 4 # for 4 cores
 
-Most books on testing emphasize how important it is to have unittests
-run fast. With pytest-xdist we have a simple way to cut runtimes
-significantly.
+Most recommendations and guides on testing emphasize how important it
+is to have unittests run fast. With pytest-xdist we have a simple way
+to cut runtimes significantly.
 
 pytest-cov
 ----------
@@ -185,3 +260,9 @@ whether you are running legacy python (2.x) or Python 3.
 Py.test is `actively developed on github
 <http://github.com/pytest-dev/pytest>`_ and is in my experience a
 contributor friendly project.
+
+
+.. note::
+
+   A history of changes and updates of this blog post can be found at
+   https://github.com/HolgerPeters/blog/commits/master/pytest.rst
