@@ -1,0 +1,23 @@
+=====
+State
+=====
+
+:date: 2015-11-11 20:00
+:modified: 2015-11-11 13:20
+:tags: engineering simplicity
+:category: simplicity
+
+My smart phone has 2 great features. When I listen to something with my head
+phones, and I pull the head phones out of the cinch plug, the music or the
+podcast stops playing until the headphones are plugged in again. The other is
+that when I get a call while listening to music over my headphones, the music
+is interrupted, until the call is over.
+
+What could go wrong? Today I was listening to music and got a call. The music
+stopped playing and I picked up the call. When I hung up, the music started to
+play again, this time however on the speakers. So there I was, quickly trying
+to turn down the music.
+
+This little real-world example shows how hard it is for developers to work with
+state, by itsself a state can be pretty simple, but introducing another degree
+of freedom increases complexity by a magnitude.
