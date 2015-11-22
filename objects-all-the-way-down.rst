@@ -32,7 +32,7 @@ comparison with the most common syntax elements:
 .. code-block:: python
 
    class MyClass(object):
-       def test_methodcall(x):
+       def a_methodcall(x):
            a = list(range(10, 1, -1))
            a.sort()
            return a
@@ -42,7 +42,7 @@ the class definition see [#f1]_)
 
 .. code-block:: smalltalk
 
-   MyClass>>testMethodCall
+   MyClass>>aMethodCall
         |a|
         a := (10 to: 1 by: -1) asArray
         ^ a sort
