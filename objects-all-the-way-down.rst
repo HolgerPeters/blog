@@ -80,7 +80,7 @@ otherwise it will directly return the user name.
 .. code-block:: python
 
    class User(object):
-       def repr_name(user):
+       def repr_name(self):
             "Return the name of the user if available, otherwise 'anonymous user'"
             if self.name is None:
                 res = "anonymous user"
@@ -89,8 +89,8 @@ otherwise it will directly return the user name.
             return res
 
    class User2(object):
-       def repr_name(x):
-            return "anonymous user" if self.name else self.name
+       def repr_name(self):
+            return "anonymous user" if self.name is None else self.name
 
 They translate directly into two Smalltalk methods [#f1]_
 
