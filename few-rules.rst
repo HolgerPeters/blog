@@ -87,6 +87,30 @@ Note: Using polymorphism (object-oriented methods) in arguments is **not** cover
 this anti-pattern. So it is perfectly fine, that ``touch_many`` can work with
 ``list`` values and ``Iterables``.
 
+Distinguishing between Procedures and Functions
+===============================================
+
+The first programming language I learned was Pascal. I do not miss it a bit,
+but for one nice little nitpicking property that Pascal had. In Pascal, there
+was a difference between functions (with a return value) and procedures
+(without a return value):
+
+.. code-block:: pascal
+
+  function add(x: integer, y: integer) : integer;
+  begin
+      add := x + y
+  end
+
+  procedure DrawRectangle(x0, y0, x1, y1: integer);
+  begin
+      DrawLine(x0, y0, x0, y1);
+      DrawLine(x0, y0, x1, y0);
+      DrawLine(x1, y0, x1, y1);
+      DrawLine(x1, y1, x1, y1);
+  end
+
+
 
 .. [#f1] It took me a while to figure out that the
          Zen of Python is filed under the "humour" section on the python
