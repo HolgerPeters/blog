@@ -110,6 +110,55 @@ was a difference between functions (with a return value) and procedures
       DrawLine(x1, y1, x1, y1);
   end
 
+This distinction is only then useful, if you separate side-effects into
+procedures, and the side-effect free determination/calculation of values into
+functions. Even if Python does not syntactically separate functions from
+procedures, we can semantically try to separate them.
+
+Instead of writing one function ``print_list_of_txt_files`` that determines a
+list of text files and prints them to the console, I suggest you implement one
+function to determine the list of text files ``list_of_txt_files``, and another
+function to format out the resulting list ``print_file_list``. Immediate rewards:
+
+* You can easily unit test the ``list_of_txt_files`` without capturing stdout.
+* You can write alternatives for ``print_file_list`` for other use cases later
+  on.
+
+In essence, this is a classic separation of concerns: The piece of code that
+prints out the files does not need to know where this list comes from.
+
+How to be able to tell apart functions from Procedures
+------------------------------------------------------
+
+You can get the best benefits from separating functions from procedures if you
+are able to tell them apart rather quickly browsing through your code.
+
+First of all, if you can help it, don't return values from procedural
+functions. Moreover, if you do return a value, make sure that your function
+does not mutate your arguments.
+
+.. code-block:: python
+
+   # this is bad: mutates lst, doesn't appear to work in-place on first glance
+   def replace_none_items(lst, replacement):
+       for i, elem in enumerate(lst):
+           if elem is None:
+               lst[i] = replacement
+       return lst
+
+   # better, does not pretend to work in-place, still a "procedure"
+   def do_replace_none_itemsr(lst, replacement):
+       for i, elem in enumerate(lst):
+           if elem is None:
+               lst[i] = replacement
+       return lst
+
+   # best: a real function
+   def replace_none_items(lst, replacement):
+       return [replacement if elem is None else elem
+               for elem in lst]
+
+
 
 
 .. [#f1] It took me a while to figure out that the
