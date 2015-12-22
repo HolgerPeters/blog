@@ -220,6 +220,55 @@ function's implementation. Keeping naming more generic will not lure us onto
 this track.
 
 
+Avoid Awkwared Arguments
+========================
+
+Python is really liberal on function arguments. This is great, but can turn out
+to be a magnet for trouble if not used with care. In fact there I have several
+anti-patterns regarding arguments that I can demonstrate here, and I encourage
+you to take some extra time when writing your functions to not write these kind
+of functions in the first place.
+
+
+Flag Parameters
+---------------
+
+Some arguments make a function do one thing in one case, and a completely other
+thing in the other case. Typically booolean arguments are the most often
+offendes, but this is not limited to them.
+
+.. code-block:: python
+
+   def determine_estimated_download_size(url, cached=False):
+       if cached:
+           # ....
+           return
+       else:
+           # ....
+           return
+
+In most cases, I would refactor both branches of the if statement into their
+own function and possibly move the if-statement to the calling code. In more
+cases than you would belive, the flag parameter ``cached`` is actually known at
+compile time and the calling code can directly call into the cached, or the
+not-cached implementation. If not, one can still leave the flag-parameter
+function in place as a dispatcher, or one might have a valid use case for
+*classes*.
+
+
+Default Arguments
+-----------------
+
+Default arguments to functions are a curse and a blessing. They are a blessing
+because they can make a programmer's life much more easy. Use carefully chosen
+defaults unless you have reason to override them - sounds like a good approach.
+However, one can also look at them as an indicator for lazy design. In the end,
+they can easily expose implementation detail to the function user and make
+refactoring a lot harder. They take away the direct need for the programmer to
+carefully design their interfaces (just add a default argument and we are
+fine).
+
+
 .. [#f1] It took me a while to figure out that the
          Zen of Python is filed under the "humour" section on the python
          homepage. Naturally it should be taken with a grain of salt.
