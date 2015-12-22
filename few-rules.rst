@@ -127,7 +127,7 @@ function to format out the resulting list ``print_file_list``. Immediate rewards
 In essence, this is a classic separation of concerns: The piece of code that
 prints out the files does not need to know where this list comes from.
 
-How to be able to tell apart functions from Procedures
+How to tell apart Functions from Procedures
 ------------------------------------------------------
 
 You can get the best benefits from separating functions from procedures if you
@@ -159,6 +159,65 @@ does not mutate your arguments.
                for elem in lst]
 
 
+Naming Things
+=============
+
+My next advice will be a bit controversial: It is about naming things. First of
+all, I'd like to acknowledge that finding good names is hard:
+
+.. epigraph::
+
+   There are only two hard things in Computer Science: cache invalidation and
+   naming things
+
+   -- Phil Karlton
+
+
+General advice on naming is, to be as descriptive/verbose as bearable. So one
+advice I have heard once too often is to avoid:
+
+.. code-block:: python
+
+   {k: u
+    for k, u in users.items() if is_authenticated(v)}
+
+in favor of
+
+.. code-block:: python
+
+   {username: user
+    for username, user in users.items() if is_authenticated(user)}
+
+I do not think that the second version is guaranteed to be more appropriate
+than the first one. Succinctness has some merrits, especially when the declared
+variables are very local. As a simple rule (that is meant to be broken), useful
+identifiers are best kept short when used in a tight scope, and should be
+longer / more descriptive  when used in a wider scope (e.g. a library function,
+etc.). Sprinkle the same substring in several variables (like ``user`` in the
+above example) usually doesn't help anyone. Sometimes succinctness is king (and
+then however, descriptive names can be paramount).
+
+The worst aspect is wrongfully naming things. Apart from changing meanings of
+variable names over time, one of the worst naming issues is being to
+specific/restrictive with the names.
+
+Let's revisit the ``touch_many(filenames)`` function from above. One might 
+be tempted to rename ``filenames`` to ``filenames_list`` to make more clear
+that a list of file names is involved:
+
+.. code-block:: python
+
+   def touch_many(filenames_list):
+       for filename in filenames_list:
+           touch(filename)
+
+However, this name is too restrictive. In fact, any iterable container, that
+contains file names might be used with this function. User code might depend on
+being able to pass a set  of file names (or an iterator) to this function, yet
+on the implementor's side, the name would imply that only lists are passed. All
+of the sudden, a change that is fine for lists might find it's way into the
+function's implementation. Keeping naming more generic will not lure us onto
+this track.
 
 
 .. [#f1] It took me a while to figure out that the
