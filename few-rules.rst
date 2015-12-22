@@ -81,7 +81,7 @@ Typical cases of this anti-pattern in code bases can be:
 
 * using lists of elements, or a single element as arguments (like the example)
 * allowing integers/floats and strings that are implicitly converted to numbers
-* allowing for both file-handles and strings [#f3]
+* allowing for both file-handles and strings [#f2]
 
 Note: Using polymorphism (object-oriented methods) in arguments is **not** covered by
 this anti-pattern. So it is perfectly fine, that ``touch_many`` can work with
@@ -179,7 +179,7 @@ advice I have heard once too often is to avoid:
 .. code-block:: python
 
    {k: u
-    for k, u in users.items() if is_authenticated(v)}
+    for k, u in users.items() if is_authenticated(u)}
 
 in favor of
 
@@ -224,4 +224,4 @@ this track.
          Zen of Python is filed under the "humour" section on the python
          homepage. Naturally it should be taken with a grain of salt.
 
-.. [#f3] Issue here: how is the file going to be opened.
+.. [#f2] Issue here: how is the file going to be opened.
