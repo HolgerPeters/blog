@@ -65,7 +65,7 @@ obviously more handy than in - let's say - C++ where we typically know of
 reason to avoid this pattern is: You can just implement the loop in a separate
 function:
 
-.. code-block::
+.. code-block:: python
 
    def touch(filename):
        "kind of like coreutils touch"
@@ -146,17 +146,39 @@ does not mutate your arguments.
                lst[i] = replacement
        return lst
 
-   # better, does not pretend to work in-place, still a "procedure"
+   # better, does not pretend to be a function, still works in-place, still a
+   # "procedure"
    def do_replace_none_itemsr(lst, replacement):
        for i, elem in enumerate(lst):
            if elem is None:
                lst[i] = replacement
-       return lst
 
-   # best: a real function
+   # best: a real function, either as list comprehension or by just mutating a
+   # local variable
    def replace_none_items(lst, replacement):
-       return [replacement if elem is None else elem
-               for elem in lst]
+       res = []
+       for elem in lst:
+           if elem is None:
+               res.append(replacement)
+           else:
+               res.append(elem)
+
+   def replace_none_items_list_comprehension(lst, replacement):
+       def replace_none(x):
+           if x is None:
+               return replacement
+           else:
+               return x
+       return [replace_none(elem) for elem in lst]
+
+   # and if you find the list comprehension to be hard to read:
+   def replace_none_items2(lst, replacement):
+       for elem in lst:
+           if elem is None:
+               yield replacement
+           else:
+               yield elem
+
 
 
 Naming Things
@@ -201,7 +223,7 @@ The worst aspect is wrongfully naming things. Apart from changing meanings of
 variable names over time, one of the worst naming issues is being to
 specific/restrictive with the names.
 
-Let's revisit the ``touch_many(filenames)`` function from above. One might 
+Let's revisit the ``touch_many(filenames)`` function from above. One might
 be tempted to rename ``filenames`` to ``filenames_list`` to make more clear
 that a list of file names is involved:
 
@@ -265,8 +287,16 @@ defaults unless you have reason to override them - sounds like a good approach.
 However, one can also look at them as an indicator for lazy design. In the end,
 they can easily expose implementation detail to the function user and make
 refactoring a lot harder. They take away the direct need for the programmer to
-carefully design their interfaces (just add a default argument and we are
-fine).
+carefully design their interfaces (a "just add a default argument and we are
+fine" attitude will bite you later).
+
+A few questions to ask yourself when introducing default arguments:
+
+* will changing the default value of a keyword argument be an interface
+  breaking change?
+* are there combination of arguments with overridden defaults that are
+  contradictory?
+
 
 
 .. [#f1] It took me a while to figure out that the
