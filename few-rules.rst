@@ -111,24 +111,47 @@ return value).
 
 .. code-block:: pascal
 
-  (* calculate the angle between the lines p0-p1 and p0-p2 *)
-  function triangle_angle(var p0, p1, p2: POINT) : boolean;
-  var
-      inner_prod : real
-  begin
-      inner_prod := (p1.z - p0.z) * (p2.z - p0.z) + (p1.z - p0.z) * (p2.z - p0.z)) + (p1.z - p0.z) * (p2.z - p0.z)
-      triangle_angle := arccos(inner_prod / distance(p0, p1) / distance(p0, p2))
-  end
+  program Test;
 
-  procedure DrawRectangle(p0, p1, p2: POINT);
-  var
-     angle : inner_prod
+  uses math, sysutils, graph;
+
+  type
+    Point = record
+      x, y, z : REAL;
+    end;
+
+  function Distance(var p0, p1: Point) : REAL;
   begin
-      DrawLine(p0.x, p0.y, p1.x, p1.y);
-      DrawLine(p0.x, p0.y, p2.x, p2.y);
-      angle := triangle_angle(p0, p1, p2);
-      DrawText(p0.x, p0.y, FloatToStr(angle));
-  end
+    Distance := sqrt(power(p0.x - p1.x, 2)
+                   + power(p0.y - p1.y, 2)
+                   + power(p0.z - p1.z, 2));
+  end;
+
+  (* calculate the angle between the lines p0-p1 and p0-p2 *)
+  function TriangleAngle(var p0, p1, p2: POINT) : REAL;
+  var
+    InnerProd : REAL;
+  begin
+    InnerProd := (p1.z - p0.z) * (p2.z - p0.z)
+               + (p1.z - p0.z) * (p2.z - p0.z)
+               + (p1.z - p0.z) * (p2.z - p0.z);
+    TriangleAngle := arccos(InnerProd / distance(p0, p1) / distance(p0, p2))
+  end;
+
+  procedure DrawTriangle(var p0, p1, p2: POINT);
+  var
+    angle : REAL;
+  begin
+    MoveTo(p1.x, p1.y);
+    LineTo(p0.x, p0.y);
+    LineTo(p2.x, p2.y);
+    angle := TriangleAngle(p0, p1, p2);
+    MoveTo(p0.x, p0.y);
+    OutText(FloatToStr(angle));
+  end;
+  begin
+   (*...*)
+  end.
 
 This distinction is only useful, when you move the
 side-effectful parts of the code into procedures and the
@@ -145,7 +168,7 @@ side-effect-free gives you
 
 * the opportunity to write straightforward value-oriented
   unit tests for the side-effect free function
-  ``triangle_angle``
+  ``TriangleAngle``
 * life is easier when writing an alternative implementation
   of the side-effectful code, for example using another
   drawing library, etc.
