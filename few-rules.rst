@@ -31,13 +31,16 @@ supporting one argument (is a string object for example).
        with open(filename, 'a'):
            os.utime(filename, times)
 
-And after a while, the function suddenly looks like this:
+This is nice and simple.  But every code base evolves, and
+so, after a few changes here (all backwards compatible
+refactorings) you might find an extended version of this
+function:
 
 .. code-block:: python
 
    def touch(filenames):
-       """kind of like coreutils touch, works for either one file name, or a list
-       of file names"""
+       """kind of like coreutils touch, works for either one
+       file name, or a list of file names"""
 
        if not isinstance(filenames, (list, iterable)):
            filenames = [filenames]
@@ -47,8 +50,8 @@ And after a while, the function suddenly looks like this:
                os.utime(fname, times)
 
 What happened? For some reason, one needed "touch" several files. Probably
-there was a variable somewhere containing that list of filenames. And for the
-sake of convenience, the touch function has been extended to accomodate that
+there was a variable containing that list of filenames. And for the
+sake of convenience, the ``touch`` function has been extended to accomodate that
 use case.
 
 This is a bad pattern for a number of reasones. First of all, the touch
@@ -61,9 +64,12 @@ string, if you saw a call ``touch(x)``, you could be kind of sure that ``x``
 was a string. With the more liberal version of ``touch``, one cannot make that
 inference any more (because there are no type declarations in Python, this is
 obviously more handy than in - let's say - C++ where we typically know of
-``x``'s type from its declaration). And the third, and probably most important
-reason to avoid this pattern is: You can just implement the loop in a separate
-function:
+``x``'s type from its declaration). The third, and probably most important
+reason to avoid this pattern is: You can just implement the
+loop in the calling code instead of inside the ``touch``
+function. If you need the convenience of a function that
+touches a list of files, you can implement one very easily
+that resorts to the first touch function:
 
 .. code-block:: python
 
@@ -77,84 +83,106 @@ function:
        for filename in filenames:
            touch(filename)
 
-Typical cases of this anti-pattern in code bases can be:
+Typical cases where this (anti-)pattern in code bases
+might emerge are mostly related to supporting several types
+for one argument *without a direct need* [#f2]_, e.g.
 
-* using lists of elements, or a single element as arguments (like the example)
-* allowing integers/floats and strings that are implicitly converted to numbers
-* allowing for both file-handles and strings [#f2]
+* the example above using lists of elements, or a single
+  element as arguments
+* allowing integers/floats and strings that are implicitly
+  converted to numbers
+* allowing for both file-handles and strings [#f3]_
 
-Note: Using polymorphism (object-oriented methods) in arguments is **not** covered by
-this anti-pattern. So it is perfectly fine, that ``touch_many`` can work with
-``list`` values and ``Iterables``.
+Note: Using polymorphism (object-oriented methods) in
+arguments is **not** covered by this anti-pattern. So it is
+perfectly fine, that ``touch_many`` can work with ``list``
+values and ``Iterables``. Because here, the object system
+performs the dispatch, and not a hand-rolled
+``if``-statement.
 
 Distinguishing between Procedures and Functions
 ===============================================
 
 The first programming language I learned was Pascal. I do not miss it a bit,
-but for one nice little nitpicking property that Pascal had. In Pascal, there
-was a difference between functions (with a return value) and procedures
-(without a return value):
+but for one nice little nitpicking property that Pascal had.
+In Pascal has two kind of *subroutines*: functions (those
+that have a return value) and procedures (those without a
+return value).
 
 .. code-block:: pascal
 
-  function add(x: integer, y: integer) : integer;
+  (* calculate the angle between the lines p0-p1 and p0-p2 *)
+  function triangle_angle(var p0, p1, p2: POINT) : boolean;
+  var
+      inner_prod : real
   begin
-      add := x + y
+      inner_prod := (p1.z - p0.z) * (p2.z - p0.z) + (p1.z - p0.z) * (p2.z - p0.z)) + (p1.z - p0.z) * (p2.z - p0.z)
+      triangle_angle := arccos(inner_prod / distance(p0, p1) / distance(p0, p2))
   end
 
-  procedure DrawRectangle(x0, y0, x1, y1: integer);
+  procedure DrawRectangle(p0, p1, p2: POINT);
+  var
+     angle : inner_prod
   begin
-      DrawLine(x0, y0, x0, y1);
-      DrawLine(x0, y0, x1, y0);
-      DrawLine(x1, y0, x1, y1);
-      DrawLine(x1, y1, x1, y1);
+      DrawLine(p0.x, p0.y, p1.x, p1.y);
+      DrawLine(p0.x, p0.y, p2.x, p2.y);
+      angle := triangle_angle(p0, p1, p2);
+      DrawText(p0.x, p0.y, FloatToStr(angle));
   end
 
-This distinction is only then useful, if you separate side-effects into
-procedures, and the side-effect free determination/calculation of values into
-functions. Even if Python does not syntactically separate functions from
-procedures, we can semantically try to separate them.
+This distinction is only useful, when you move the
+side-effectful parts of the code into procedures and the
+side-effect free parts into functions. Belive it or not: if
+you do this, you have a much easier time.
 
-Instead of writing one function ``print_list_of_txt_files`` that determines a
-list of text files and prints them to the console, I suggest you implement one
-function to determine the list of text files ``list_of_txt_files``, and another
-function to format out the resulting list ``print_file_list``. Immediate rewards:
+Even if Python does not syntactically separate functions
+from procedures, we can semantically try to separate them.
 
-* You can easily unit test the ``list_of_txt_files`` without capturing stdout.
-* You can write alternatives for ``print_file_list`` for other use cases later
-  on.
+Instead of conflating the calculation of the angle in a
+triangle from with plotting it in a single function,
+separating them along the lines of side-effectful and
+side-effect-free gives you
 
-In essence, this is a classic separation of concerns: The piece of code that
-prints out the files does not need to know where this list comes from.
+* the opportunity to write straightforward value-oriented
+  unit tests for the side-effect free function
+  ``triangle_angle``
+* life is easier when writing an alternative implementation
+  of the side-effectful code, for example using another
+  drawing library, etc.
+
+In essence, this is a classic separation of concerns: The
+piece of code, that prints out an angle does not
+need to know how it is calculated.
 
 How to tell apart Functions from Procedures
-------------------------------------------------------
+-------------------------------------------
 
 You can get the best benefits from separating functions from procedures if you
 are able to tell them apart rather quickly browsing through your code.
 
-First of all, if you can help it, don't return values from procedural
-functions. Moreover, if you do return a value, make sure that your function
-does not mutate your arguments.
+First of all, if you can help it, don't return values from
+procedural functions. Moreover, if you do return a value,
+make sure that your function does not mutate your arguments.
 
 .. code-block:: python
 
-   # this is bad: mutates lst, doesn't appear to work in-place on first glance
+   # this is bad: mutates lst, doesn't appear to work
+   # in-place on first glance, but it actually does.
    def replace_none_items(lst, replacement):
        for i, elem in enumerate(lst):
            if elem is None:
                lst[i] = replacement
        return lst
 
-   # better, does not pretend to be a function, still works in-place, still a
-   # "procedure"
+   # better, does not pretend to be a function, still works
+   # in-place, still a # "procedure"
    def do_replace_none_itemsr(lst, replacement):
        for i, elem in enumerate(lst):
            if elem is None:
                lst[i] = replacement
 
-   # best: a real function, either as list comprehension or by just mutating a
-   # local variable
+   # best: a real function, either as list comprehension or
+   # by just mutating a local variable
    def replace_none_items(lst, replacement):
        res = []
        for elem in lst:
@@ -178,68 +206,6 @@ does not mutate your arguments.
                yield replacement
            else:
                yield elem
-
-
-
-Naming Things
-=============
-
-My next advice will be a bit controversial: It is about naming things. First of
-all, I'd like to acknowledge that finding good names is hard:
-
-.. epigraph::
-
-   There are only two hard things in Computer Science: cache invalidation and
-   naming things
-
-   -- Phil Karlton
-
-
-General advice on naming is, to be as descriptive/verbose as bearable. So one
-advice I have heard once too often is to avoid:
-
-.. code-block:: python
-
-   {k: u
-    for k, u in users.items() if is_authenticated(u)}
-
-in favor of
-
-.. code-block:: python
-
-   {username: user
-    for username, user in users.items() if is_authenticated(user)}
-
-I do not think that the second version is guaranteed to be more appropriate
-than the first one. Succinctness has some merrits, especially when the declared
-variables are very local. As a simple rule (that is meant to be broken), useful
-identifiers are best kept short when used in a tight scope, and should be
-longer / more descriptive  when used in a wider scope (e.g. a library function,
-etc.). Sprinkle the same substring in several variables (like ``user`` in the
-above example) usually doesn't help anyone. Sometimes succinctness is king (and
-then however, descriptive names can be paramount).
-
-The worst aspect is wrongfully naming things. Apart from changing meanings of
-variable names over time, one of the worst naming issues is being to
-specific/restrictive with the names.
-
-Let's revisit the ``touch_many(filenames)`` function from above. One might
-be tempted to rename ``filenames`` to ``filenames_list`` to make more clear
-that a list of file names is involved:
-
-.. code-block:: python
-
-   def touch_many(filenames_list):
-       for filename in filenames_list:
-           touch(filename)
-
-However, this name is too restrictive. In fact, any iterable container, that
-contains file names might be used with this function. User code might depend on
-being able to pass a set  of file names (or an iterator) to this function, yet
-on the implementor's side, the name would imply that only lists are passed. All
-of the sudden, a change that is fine for lists might find it's way into the
-function's implementation. Keeping naming more generic will not lure us onto
-this track.
 
 
 Avoid Awkwared Arguments
@@ -298,9 +264,28 @@ A few questions to ask yourself when introducing default arguments:
   contradictory?
 
 
+Final Thoughts
+==============
+
+When thinking of ways to structure your code
+
+* focus on **intent** (intent, not indent)
+* prefer simple functions
+* try to avoid incidental state
+* instead of trying to offer convenient interfaces, strive
+  for clear, robust interfaces
+
+
+Footnotes
+=========
+
 
 .. [#f1] It took me a while to figure out that the
          Zen of Python is filed under the "humour" section on the python
          homepage. Naturally it should be taken with a grain of salt.
 
-.. [#f2] Issue here: how is the file going to be opened.
+.. [#f2] Polymorphism is not a bad thing *per se*, it just
+         should not be used lightly and it is best used
+         using classes and not using if-statements.
+
+.. [#f3] Issue here: how is the file going to be opened.
