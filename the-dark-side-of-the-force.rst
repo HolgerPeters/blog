@@ -2,22 +2,19 @@
 Exceptions - The Dark Side of the Force
 =======================================
 
-:date: 2016-01-02 12:00
-:tags: python, smalltalk, programming languages
-:category: programming-languages
-:status: draft
+:date: 2016-01-13 23:16
+:tags: python
+:category: python
+:summary: A recent blog post `"If you don't like exceptions, you don't like Python" <http://stupidpythonideas.blogspot.de/2015/05/if-you-dont-like-exceptions-you-dont.html>`__ has made rounds lately, and compelled me to write a partial rebuttal.  It is not like that blog post is completely wrong, but it is not the be-all and end-all of this topic. And if I may add, it is kind of opinionated.
 
-.. _originalblog: http://stupidpythonideas.blogspot.de/2015/05/if-you-dont-like-exceptions-you-dont.html
 
 
 A recent blog post `"If you don't like exceptions, you don't
-like Python" <originalblog>`_ has made rounds lately, and
+like Python" <http://stupidpythonideas.blogspot.de/2015/05/if-you-dont-like-exceptions-you-dont.html>`__ has made rounds lately, and
 compelled me to write a partial rebuttal. It is not like
 that blog post is completely wrong, but it is not the be-all
 and end-all of this topic. And if I may add, it is kind of
-opinionated.  For this blog post, I will ignore the
-click-baiting headlinge ("... you don't like Python") and
-focus on the individual statements on exception handling.
+opinionated.
 
 The original article states that exceptions are central to
 Python, that the common advice "exceptions should only be
