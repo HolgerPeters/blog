@@ -57,13 +57,11 @@ that the argument is a list of length above 0.
 
 Exceptions are dissociated from values and variables
 ----------------------------------------------------
-
 Sometimes I stumble over code that uses a pattern like this:
 
 .. code-block:: python
 
    result = []
-
    result.append(dosomething(bar))
    try:
       foo = bar[key][anotherkey]
@@ -84,15 +82,27 @@ error handling from the values and variables. My question
 is: can you tell whether catching KeyErrors from
 ``dosomething()`` is intended?
 
-So when using exceptions, one has to be really careful about which exceptions
-are caught and which aren't. With defensive programming (i.e.
-``haskey()``)-style checks, it is unambiguous.
+So when using exceptions, one has to be really careful about
+which exceptions are caught and which aren't. With defensive
+programming (i.e.  ``haskey()``)-style checks, it is
+unambiguous and hardly as "intrusive" to the code as writing
+out individual ``try-catch`` blocks for each indexing
+operation.
 
 
-(As an exception to the rule: This could be acceptable if,
-for example in a web framework, you would like to transform
-all exceptions into a HTTP error and log away the
-stacktrace.)
+Exceptional Dangers
+~~~~~~~~~~~~~~~~~~~
+
+So there are basically two risks when using exceptions:
+
+1. An exception that should be caught is not caught
+2. An exception is caught wrongfully
+
+The first risk is definitely a risk, but one that I don't
+worry too much about.  The second is a risk I definitely
+fear. How many functions in your code can throw
+``KeyErrors``, ``ValueError``, ``IndexError``,
+``TypeError``, and ``RuntimeError`` can your code throw?
 
 
 Exceptions as Pythonic gotos
@@ -168,7 +178,6 @@ helpful for improving code.
 
 Conclusion
 ----------
-
 Exceptions are a central and powerful tool in Python. But
 use them with care and caution. Do not pretend that they are
 like a magic wand, don't use them to show your love for
