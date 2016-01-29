@@ -44,8 +44,8 @@ barnert. Errors should be propagated using exceptions, so
        minimum = lst[0]
        for item in lst:
            if minimum > item:
-                minimum = item
-       return item
+               minimum = item
+       return minimum
 
 is a perfectly fine usage of exceptions, and callers should
 check for these exceptions if their code does not guarantee
