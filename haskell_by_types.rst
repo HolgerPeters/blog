@@ -353,6 +353,8 @@ To familiarize yourself with Functors and Applicatives, it
 is really great to write parsers with `megaparsec
 <https://mrkkrp.github.io/megaparsec/>`_.
 
+`What I wish I knew <http://dev.stephendiehl.com/hask/>`_ by
+Stephen Diehl is also a great source.
 
 Footnotes
 =========
@@ -403,7 +405,11 @@ Footnotes
    your friend with invaluable information. It
    notifies you when you use redundant brackets and
    this feedback will familiarize you with operator
-   precedence much quicker.
+   precedence much quicker. Like any linter, I suppose that
+   hlint's value is probably at its peak when used by
+   beginners and  I expect it will be less valuable to me
+   over time. Nevertheless I don't want to go without it
+   right now.
 
    I use neovim with the plugins ::
 
@@ -412,11 +418,14 @@ Footnotes
            Plug 'bitc/vim-hdevtools'
 
 
-   Pointfree is another tool, that I use curiously, it
+   Pointfree is another tool, that I use (curiously), it
    transforms your code to point-free style. I often use it
    when I feel that a line of code could possibly be written
    in point free style, check it out and revert back if I
-   feel normal-style Haskell is better.
+   feel normal-style Haskell is better. This has taught me
+   some things I probably wouldn't have discovered for a
+   long time, for example that ``(,)`` and ``(+3)`` exist,
+   etc.
 
 .. [#f3] A Python programmer will probably pick up Ruby's
    language features rather quickly and huge portions
