@@ -5,11 +5,20 @@ Haskell by Types
 :date: 2016-03-18 20:00
 :tags: functional programming, haskell
 :category: haskell
-:status: draft
 
-I came to understand, that while learning Haskell one cannot
-avoid to familiarize oneself with the type signatures. The
-following compilation is of things I rather understood
+Getting a better understand of Haskell has always been on my
+list. My typical toolbox for learning another programming
+language is not so effective with Haskell, because in contrast to
+say - Ruby [#f3]_  - learning Haskell requires me to learn new
+concepts. On the other hand, Haskell offers some unique features
+that actually make learning it surprisingly easy again.
+One useful tool I like more and more about haskell is the
+power of its type signatures. While learning Haskell you
+cannot avoid to familiarize oneself with the type signatures.
+But if you embrace them, it can boost your understanding
+drastically.
+
+The following compilation is of things I rather understood
 recently, so bear that I might have missed one or the other
 connection.
 
@@ -76,6 +85,14 @@ from its predecessor.
 
 Monad
 -----
+
+Monads are characterized by the bind operator ``>>=`` and
+the ``return`` operator. ``>>=`` passes a "monadic" value
+``m a`` to a monadic function ``(a -> m b)``, ``return``
+puts a value into a monadic container.
+
+Monads are also Applicatives and Functors, i.e. they also
+implement ``<$>``, ``<*>``, etc.
 
 .. code-block:: haskell
 
@@ -295,8 +312,22 @@ composition
    plp1 = h <=< g <=< f
    plp2 = f >=> g >=> h
 
-References
-===========
+To sum it up: Functional programming is often defined as
+programming by function composition and application. Monads
+are a functional concepts, and we can see that monads compose
+in a strikingly similar way. I think this underlines that
+Monads are indeed a functional concept (and not -- like
+sometimes stated -- imperative programming in sheep's
+clothing).
+
+Resources
+=========
+
+For more detail on Haskell's types see the
+`Typeclassopedia <https://wiki.haskell.org/Typeclassopedia>`_.
+
+Footnotes
+=========
 
 
 .. [#f1] type signatures can be obtained by running ghci and asking it for types
@@ -333,5 +364,35 @@ References
         > :t (.)
         (.) :: (b -> c) -> (a -> b) -> a -> c
 
+.. [#f2] Some notes on Tooling
+
+   In my experience, I learned the best with Haskell,
+   when I used appropriate tooling. They accelerate
+   learning Haskell so much.
+
+   `hlint
+   <https://hackage.haskell.org/package/hlint>`_ is
+   your friend with invaluable information. It
+   notifies you when you use redundant brackets and
+   this feedback will familiarize you with operator
+   precedence much quicker.
+
+   I use neovim with the plugins ::
+
+           Plug 'benekastah/neomake'
+           Plug 'dag/vim2hs'
+           Plug 'bitc/vim-hdevtools'
+
+
+   Pointfree is another tool, that I use curiously, it
+   transforms your code to point-free style. I often use it
+   when I feel that a line of code could possibly be written
+   in point free style, check it out and revert back if I
+   feel normal-style Haskell is better.
+
+.. [#f3] A Python programmer will probably pick up Ruby's
+   language features rather quickly and huge portions
+   of the time learning Ruby will be spent on
+   familiarizing onesself with the standard library.
 
 .. vim:tw=60:
