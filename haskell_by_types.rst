@@ -231,23 +231,21 @@ we cannot just mutate some counter-variable.
    increment = state $ \i -> let j = i + 1
                              in ("$" ++ show j, j)
 
-   mkLabelPair :: LabelM (String, String)
-   -- (,) <- is an operator creating a tuple
-   mkLabelPair = (,) <$> increment <*> increment
-   -- alternatively mkLabelPair = liftA2 (,) increment increment
-
-   test :: Bool -> LabelM [(String, String)]
-   test discard = f <$> mkLabelPair
-                    <*> mkLabelPair
-                    <*> mkLabelPair
-                where f a b c = if discard
-                                then [a, c]
-                                else [a, b, c]
+   labels :: Bool -> LabelM [(String, String)]
+   labels discard = f <$> twoLabels
+                      <*> twoLabels
+                      <*> twoLabels
+                  where f a b c = if discard
+                                  then [a, c]
+                                  else [a, b, c]
+                  -- (,) <- is an operator creating a tuple
+                  twoLabels :: LabelM (String, String)
+                  twoLabels = (,) <$> increment <*> increment
 
    main :: IO ()
    main = do putStrLn "Enter `True`, or `False`"
              discard <- getLine
-             print (evalState (test . read $ discard) 0)
+             print (evalState (labels . read $ discard) 0)
 
 When executed, this program will prompt you to enter either
 ``True`` or ``False``, and then it will print out results,
@@ -262,9 +260,9 @@ function. The state is managed by the state monad
 that our state consists of an integer variable.
 
 Finally we have ``increment``, which increments, that internal
-state and returns a label, as well as ``mkLabelPair``, which
+state and returns a label, as well as ``twoLabels``, which
 generates a pair of such labels (by lifting ``increment``).
-Note that both ``increment`` and ``mkLabelPair`` are of type
+Note that both ``increment`` and ``twoLabels`` are of type
 ``LabelM _``, once ``LabelM String`` and ``LabelM (String,
 String)``.
 
