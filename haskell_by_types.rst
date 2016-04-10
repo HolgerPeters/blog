@@ -74,7 +74,9 @@ Applicative
 
 Applicative is a type class that represents sequential
 computations, where a computation does not need a result
-from its predecessor.
+from its predecessor. Applicative values are also functors,
+so you can use ``<$>`` with them.
+
 
 .. code-block:: haskell
 
@@ -193,10 +195,24 @@ various applicatives in the Haskell's std. library
    > addApplicative [1,2,3] []
    []
 
+The same evaluations can also be written in applicative
+style.
+
+.. code-block:: haskell
+
+   > (+) <$> Just 1 <*> Nothing
+   Nothing
+   > (+) <$> Just 1 <*> Just 2
+   Just 3
+   > (+) <$> Nothing <*> Just 2
+   Nothing
+   > (+) <$> Nothing <*> Nothing
+   Nothing
+
 Example: Generating a stream of unique labels
 ---------------------------------------------
 
-This will be a "more real-world" example that uses ``LiftA2``
+This will be a "more real-world" example that uses ``liftA2``
 or ``<$>`` and ``<*>``. Suppose we need to generate labels in
 code, for example while performing operations on an abstract
 syntax tree. Each label needs to be unique, and we need labels
