@@ -9,18 +9,29 @@ Haskell by Types
 Getting a better understand of Haskell has always been on my
 list. My typical toolbox for learning another programming
 language is not so effective with Haskell, because in contrast to
-say - Ruby [#f3]_  - learning Haskell requires me to learn new
-concepts. On the other hand, Haskell offers some unique features
-that actually make learning it surprisingly easy again.
-One useful tool I like more and more about haskell is the
-power of its type signatures. While learning Haskell you
-cannot avoid to familiarize oneself with the type signatures.
-But if you embrace them, it can boost your understanding
-drastically.
+say - Ruby [#f3]_  - learning Haskell requires me to learn
+new concepts. On the other hand, Haskell offers some unique
+features, which make learning it surprisingly easy again.
+Of these tools, type signatures have quickly become
+invaluable. Embrace them or perish, I might say, for if you
+don't learn to utilize them, everything people typically
+criticize about the Haskell ecosystem (sparse documentation,
+obscure love for operators, being completely lost in
+abstraction) will hit you hard. On the other hand, if you
+learn to read the Haskell type (signatures), you often know
+things from quick, formal considerations early on, without
+having even started to think about the semantics of that
+piece of code.
+
+Much can be written about type signatures but in this blog
+post, I try to focus on type signatures of Haskell's most
+common abstractions, and point out some patterns and
+parallels in them (and as it turns out, these are not only
+parallels in the type signatures, but in semantics too.)
 
 The following compilation is of things I rather understood
-recently, so bear that I might have missed one or the other
-connection.
+recently, so bear in mind, that I might have missed one or
+the other connection.
 
 Overview
 ========
@@ -44,7 +55,6 @@ We'll start having a look at normal function applications.
    ($) :: (a -> b) -> a -> b
    (.) :: (b -> c) -> (a -> b) -> a -> c
 
-
 The `.` operator for function composition allows us
 in Haskell to write ``(f . g) x`` instead of ``f (g x)``.
 
@@ -58,32 +68,41 @@ function application in general.
 Functor
 -------
 
-In a FP, statically typed programming language without the
-mathematical obsession of the haskell community, a functor
-would rather be named "Mappable".
+In a functional, statically typed programming language
+without the mathematical obsession of the haskell community,
+a functor might have been named "Mappable". Haskell took the
+name Functor from a `mathematical concept in category theory
+<http://www.wikipedia.com/wiki/Functor>`_
 
 .. code-block:: haskell
 
    (<$>) :: Functor f => (a -> b) -> f a -> f b
 
-There is also ``fmap``, which is just another name for ``(<$>)``.
-
+Depending on personal preference and style, there is also
+``fmap``, which is just another name for ``(<$>)``.
 
 Applicative
 -----------
 
-Applicative is a type class that represents sequential
-computations, where a computation does not need a result
-from its predecessor. Applicative values are also functors,
-so you can use ``<$>`` with them.
-
+An Applicative is a special kind of Functor, that extends
+functors. It features the operator ``<*>`` for sequencing
+computations (combining their results), and ``pure``, a
+function to bring values into an applicative context.
 
 .. code-block:: haskell
 
    pure  :: Applicative f =>          a -> f a
    (<*>) :: Applicative f => f (a -> b) -> f a -> f b -- sequential application
-   (*>)  :: Applicative f =>        f a -> f b -> f b -- sequence action, discard the first value
-   (<*)  :: Applicative f =>        f a -> f b -> f a -- sequence action, discard the second value
+
+While ``pure`` and ``<*>`` constitute a minimal
+implementation, typically the operators ``<*`` and ``*>``
+are also used, which discard some computation results
+instead of combining them like ``<*>``.
+
+.. code-block:: haskell
+
+   (*>)  :: Applicative f =>        f a -> f b -> f b -- discard the first value
+   (<*)  :: Applicative f =>        f a -> f b -> f a -- discard the second value
 
 Monad
 -----
@@ -101,19 +120,25 @@ implement ``<$>``, ``<*>``, etc.
    -- Sequentially compose two actions, passing any value produced
    -- by the first as an argument to the second
    (>>=)  :: Monad m =>        m a -> (a -> m b) -> m b        --
+   return :: Monad m =>      a -> m a
+
    (>>)   :: Monad m =>        m a ->        m b -> m b        -- discards value of first monad
    (<=<)  :: Monad m => (b -> m c) -> (a -> m b) -> (a -> m c) -- kleisli composition
 
-   return :: Monad m =>      a -> m a
-   fail   :: Monad m => String -> m a
+Note: Trying to explain a Monad by allegories and metaphors
+is in my experience often futile (and a common pitfall for
+Haskell learners). Way more effective is to gain some
+basic understanding on the type level and imitate Monad
+usage with various examples.
 
+Operations that Apply
+=====================
 
-Functions that apply functions
-==============================
-
-The ``<*>`` operation of the Applicative (sequential
+If you think about it,
+the ``<*>`` operation of the Applicative (sequential
 application) and the function application operator ``$``
-have a pretty similar signature:
+have a pretty similar signature, this is also true for
+``<$>``, the map operation
 
 .. code-block:: haskell
 
@@ -121,17 +146,18 @@ have a pretty similar signature:
    (<$>) :: Functor f     =>   (a -> b) -> f a -> f b
    (<*>) :: Applicative f => f (a -> b) -> f a -> f b
 
-The first operand of those operators are functions, mapping
-from one type ``a`` to the other ``b`` (in the case of
-``<*>`` it's a function in an applicative of such a function).
+The first operand of those operators all
+map from one type ``a`` to the other ``b`` (in the case of
+``<*>`` that ``a -> b`` is hidden in an applicative).
 The second operand is the argument to the application. In
 the case of normal function application this is plainly the
 function argument, with the Functor ("Mappable") it is a
 functor, in the case of the applicative it is an applicative.
+
 The result of the operation is either of type ``b``, functor
 of ``b`` or applicative of ``b``.
 
-One instance of Functor and Applicative  (a Functor is
+One instance of Functor and Applicative (a Functor is
 always an Applicative) is the list ``[]`` type.
 The following ghci interactive session will demonstrate
 the three applying operators:
@@ -145,18 +171,30 @@ the three applying operators:
    > (+) <$> [1,2,3] <*> [10, 20, 30]
    [11,21,31,12,22,32,13,23,33]
 
+In Haskell, the list type implements ``Monad``, which means
+it also is an ``Applicative`` and a ``Functor``.
+Treating the list as a functor, we can apply the function
+that increments by 10 to each element, and treating the list
+as an applicative, we can sequentially join two lists by
+adding their elements (building the sum of the cartesian
+product of their combinations).
+
 Let's investigate the type properties of that last statement
-(which mapped the addition on a list of integers and seq.
-applied it to another applicative, a list):
+that used the ``f <$> arg1 <*> arg2`` pattern (we call this
+"applicative style"):
 
 .. code-block:: haskell
 
-   > let mapAndApply x y z = x <$> y <*> z
-   > : mapAndApply
+   > let mapAndApply f arg1 arg2 = f <$> arg1 <*> arg2
+   > :t mapAndApply
    mapAndApply :: Applicative f => (a1 -> a -> b) -> f a1 -> f a -> f b
 
-Thus, Haskell infers types for ``x :: (a1 -> a -> b)``, for
-the second argument ``y :: f a1`` and ``z :: f b``.
+Thus, Haskell infers types for ``f :: (a1 -> a -> b)``, for
+the second argument ``arg1 :: f a1`` and ``arg2 :: f b``.
+
+Lifting
+-------
+
 This combination is a common function, called ``liftA2``
 
 .. code-block:: haskell
@@ -169,7 +207,7 @@ all applicatives.
 
 .. code-block:: haskell
 
-   > let addApplicative = (liftA2 (+))
+   > let addApplicative = liftA2 (+)
    addApplicative :: (Num c, Applicative f) => f c -> f c -> f c
 
 To prove the point, we can experiment with this using
@@ -196,6 +234,13 @@ various applicatives in the Haskell's std. library
    > addApplicative [1,2,3] []
    []
 
+Using a lifted function gives you the impression of working
+with ordinary functions, the symmetry between ``f $ x y`` and
+``f <$> x <*> y`` makes this possible.
+
+Applicative Style
+-----------------
+
 The same evaluations can also be written in applicative
 style.
 
@@ -210,11 +255,17 @@ style.
    > (+) <$> Nothing <*> Nothing
    Nothing
 
+Using applicative style emphasizes the resemblance  of
+function application with arguments ``f $ x y`` and
+applicative ``f <$> x <*> y``, without requiring
+pre-registered ``liftAx`` functions (x representing the
+arity).
+
 Example: Generating a stream of unique labels
 ---------------------------------------------
 
-This will be a "more real-world" example that uses ``liftA2``
-or ``<$>`` and ``<*>``. Suppose we need to generate labels in
+This will be a "more real-world" example that applicative style.
+Suppose we need to generate labels in
 code, for example while performing operations on an abstract
 syntax tree. Each label needs to be unique, and we need labels
 in various functions. Since we use Haskell and pure-functions,
@@ -337,8 +388,8 @@ composition
 
 To sum it up: Functional programming is often defined as
 programming by function composition and application. Monads
-are a functional concepts, and we can see that monads compose
-in a strikingly similar way. I think this underlines that
+are a functional concepts and we can see that monads compose
+in a very similar way. This underlines the fact that
 Monads are indeed a functional concept (and not -- like
 sometimes stated -- imperative programming in sheep's
 clothing).
@@ -353,7 +404,7 @@ To familiarize yourself with Functors and Applicatives, it
 is really great to write parsers with `megaparsec
 <https://mrkkrp.github.io/megaparsec/>`_.
 
-`What I wish I knew <http://dev.stephendiehl.com/hask/>`_ by
+`What I wish I knew when learning Haskell <http://dev.stephendiehl.com/hask/>`_ by
 Stephen Diehl is also a great source.
 
 Footnotes
