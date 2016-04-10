@@ -2,7 +2,7 @@
 Haskell by Types
 ================
 
-:date: 2016-03-18 20:00
+:date: 2016-04-10 22:00
 :tags: functional programming, haskell
 :category: haskell
 
@@ -258,13 +258,20 @@ monad's state with 0 and evaluate the monadic ``test``
 function. The state is managed by the state monad
 ``LabelM = State Int``, which directly tells us
 that our state consists of an integer variable.
-
 Finally we have ``increment``, which increments, that internal
 state and returns a label, as well as ``twoLabels``, which
 generates a pair of such labels (by lifting ``increment``).
 Note that both ``increment`` and ``twoLabels`` are of type
 ``LabelM _``, once ``LabelM String`` and ``LabelM (String,
 String)``.
+
+We use ``twoLabels`` in the ``labels`` function, where we
+use applicative style to obtain the unique labels and either
+return them all, or throw away some [#f4]_. I condensed this
+use case from abstract syntax tree (AST) rewriting code, and
+if it wouldn't blow up the example code, I would show code
+here, that introduced labels depending on the AST input to
+the program.
 
 Solving this issue with label has some benfits. First of
 all, it makes the state explicit in the type signatures,
@@ -274,6 +281,7 @@ Then, the state is handled just like any other value in
 Haskell -- immutable. ``evalState`` is the bottleneck (in a
 good sense), that allows us to evaluate our "stateful" code
 and fetch it over in the LabelM-free world.
+
 
 Composition Patterns
 ====================
@@ -414,5 +422,32 @@ Footnotes
    language features rather quickly and huge portions
    of the time learning Ruby will be spent on
    familiarizing onesself with the standard library.
+
+.. [#f4] My first intuition here was to use monadic
+   functionality  (``>>=``), yet as it turns out,
+   functor and applicative (``<*>``) is enough. This
+   confused me: If applicatives were about sequential
+   actions, where the current item does not know about its
+   predecessor, how could it increment the state-monads
+   state? The answer is in the signatures:
+
+   .. code-block:: haskell
+
+           (<*>) :: Applicative f => f (a -> b) -> f a -> f b
+
+   The ``f (a -> b)`` piece tells us, that we map from one
+   value of the applicative to another. the consecutive ``->
+   f a -> f b`` tell us, that our ``(a -> b)`` operation is
+   applied to ``f a`` to yield ``f b``. Thus shouldn't have
+   surprised me that applicative is in fact capable of
+   incrementing the counter.
+
+   For comparison, Monad's bind also  has this mapping from
+   ``a`` to ``b`` in it's signature, however in the form of
+   ``(a -> m b)``.
+
+   .. code-block:: haskell
+
+      (>>=)  :: Monad m =>        m a -> (a -> m b) -> m b
 
 .. vim:tw=60:
