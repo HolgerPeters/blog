@@ -220,12 +220,12 @@ we cannot just mutate some counter-variable.
    -- alternatively mkLabelPair = liftA2 (,) increment increment
 
    test :: Bool -> LabelM [(String, String)]
-   test discard = do a <- mkLabelPair
-                     b <- mkLabelPair
-                     c <- mkLabelPair
-                     pure $ if discard
-                               then [a, c]
-                               else [a, b, c]
+   test discard = f <$> mkLabelPair
+                    <*> mkLabelPair
+                    <*> mkLabelPair
+                where f a b c = return $ if discard
+                                         then [a, c]
+                                         else [a, b, c]
 
    main :: IO ()
    main = do putStrLn "Enter `True`, or `False`"
