@@ -107,6 +107,7 @@ implement ``<$>``, ``<*>``, etc.
    return :: Monad m =>      a -> m a
    fail   :: Monad m => String -> m a
 
+
 Functions that apply functions
 ==============================
 
@@ -239,9 +240,9 @@ we cannot just mutate some counter-variable.
    test discard = f <$> mkLabelPair
                     <*> mkLabelPair
                     <*> mkLabelPair
-                where f a b c = return $ if discard
-                                         then [a, c]
-                                         else [a, b, c]
+                where f a b c = if discard
+                                then [a, c]
+                                else [a, b, c]
 
    main :: IO ()
    main = do putStrLn "Enter `True`, or `False`"
@@ -341,6 +342,11 @@ Resources
 
 For more detail on Haskell's types see the
 `Typeclassopedia <https://wiki.haskell.org/Typeclassopedia>`_.
+
+To familiarize yourself with Functors and Applicatives, it
+is really great to write parsers with `megaparsec
+<https://mrkkrp.github.io/megaparsec/>`_.
+
 
 Footnotes
 =========
