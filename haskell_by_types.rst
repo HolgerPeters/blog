@@ -17,7 +17,7 @@ Overview
 ========
 
 The purpose of this blog post is to explain some properties
-of typical haskell type classes by looking at the type
+of typical Haskell type classes by looking at the type
 signatures of their member functions. So first of all, the
 objective is to have these signatures ready for reading.
 The following signatures were infered by looking for the type
@@ -55,13 +55,10 @@ would rather be named "Mappable".
 
 .. code-block:: haskell
 
-   fmap  :: Functor f => (a -> b) -> f a -> f b
    (<$>) :: Functor f => (a -> b) -> f a -> f b
-   (<$)  :: Functor f => a -> f b -> f a
 
-``(<$)`` is mapping with a constant value and is equivalent
-to ``(<$) a = fmap (\_ -> a)``, so we will concentrate on
-``fmap / (<$>)``.
+There is also ``fmap``, which is just another name for ``(<$>)``.
+
 
 Applicative
 -----------
@@ -121,11 +118,11 @@ the three applying operators:
 
 .. code-block:: haskell
 
-   Prelude Control.Monad> (+10) $ 1
+   > (+10) $ 1
    11
-   Prelude Control.Monad> (+10) <$> [1,2,3]
+   > (+10) <$> [1,2,3]
    [11,12,13]
-   Prelude Control.Monad> (+) <$> [1,2,3] <*> [10, 20, 30]
+   > (+) <$> [1,2,3] <*> [10, 20, 30]
    [11,21,31,12,22,32,13,23,33]
 
 Let's investigate the type properties of that last statement
@@ -134,8 +131,8 @@ applied it to another applicative, a list):
 
 .. code-block:: haskell
 
-   Prelude Control.Monad> let mapAndApply x y z = x <$> y <*> z
-   Prelude Control.Monad> : mapAndApply
+   > let mapAndApply x y z = x <$> y <*> z
+   > : mapAndApply
    mapAndApply :: Applicative f => (a1 -> a -> b) -> f a1 -> f a -> f b
 
 Thus, Haskell infers types for ``x :: (a1 -> a -> b)``, for
@@ -152,7 +149,7 @@ all applicatives.
 
 .. code-block:: haskell
 
-   Prelude Control.Monad Control.Applicative> let addApplicative = (liftA2 (+))
+   > let addApplicative = (liftA2 (+))
    addApplicative :: (Num c, Applicative f) => f c -> f c -> f c
 
 To prove the point, we can experiment with this using
@@ -202,16 +199,16 @@ we cannot just mutate some counter-variable.
 
    mkLabelPair :: LabelM (String, String)
    -- (,) <- is an operator creating a tuple
-   mkLabelPair = liftA2 (,) increment increment
-   -- alternatively: mkLabelPair = (,) <$> increment <*> increment
+   mkLabelPair = (,) <$> increment <*> increment
+   -- alternatively mkLabelPair = liftA2 (,) increment increment
 
    test :: Bool -> LabelM [(String, String)]
    test discard = do a <- mkLabelPair
                      b <- mkLabelPair
                      c <- mkLabelPair
-                     return $ if discard
-                              then [a, c]
-                              else [a, b, c]
+                     pure $ if discard
+                               then [a, c]
+                               else [a, b, c]
 
    main :: IO ()
    main = do putStrLn "Enter `True`, or `False`"
@@ -302,40 +299,39 @@ References
 ===========
 
 
-.. [#f1] type signatures can be obtained by running ghci and
-         asking it for types
+.. [#f1] type signatures can be obtained by running ghci and asking it for types
 
-         .. code-block:: haskell
+   .. code-block:: haskell
 
-              Prelude> import Control.Monad
-              Prelude Control.Monad> :t (>>=)
-              (>>=) :: Monad m => m a -> (a -> m b) -> m b
-              Prelude Control.Monad> :t (>>)
-              (>>) :: Monad m => m a -> m b -> m b
-              Prelude Control.Monad> :t return
-              return :: Monad m => a -> m a
-              Prelude Control.Monad> :t fail
-              fail :: Monad m => String -> m a
-              Prelude Control.Monad> :t (<$>)
-              (<$>) :: Functor f => (a -> b) -> f a -> f b
-              Prelude Control.Monad> :t (<$)
-              (<$) :: Functor f => a -> f b -> f a
-              Prelude Control.Monad> :t pure
-              pure :: Applicative f => a -> f a
-              Prelude Control.Monad> :t (<*>)
-              (<*>) :: Applicative f => f (a -> b) -> f a -> f b
-              Prelude Control.Monad> :t (*>)
-              (*>) :: Applicative f => f a -> f b -> f b
-              Prelude Control.Monad> :t (<*)
-              (<*) :: Applicative f => f a -> f b -> f a
-              Prelude Control.Monad> :t ($)
-              ($) :: (a -> b) -> a -> b
-              Prelude Control.Monad> :t fmap
-              fmap :: Functor f => (a -> b) -> f a -> f b
-              Prelude Control.Monad> :t (<=<)
-              (<=<) :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
-              Prelude Control.Monad> :t (.)
-              (.) :: (b -> c) -> (a -> b) -> a -> c
+        Prelude> import Control.Monad
+        > :t (>>=)
+        (>>=) :: Monad m => m a -> (a -> m b) -> m b
+        > :t (>>)
+        (>>) :: Monad m => m a -> m b -> m b
+        > :t return
+        return :: Monad m => a -> m a
+        > :t fail
+        fail :: Monad m => String -> m a
+        > :t (<$>)
+        (<$>) :: Functor f => (a -> b) -> f a -> f b
+        > :t (<$)
+        (<$) :: Functor f => a -> f b -> f a
+        > :t pure
+        pure :: Applicative f => a -> f a
+        > :t (<*>)
+        (<*>) :: Applicative f => f (a -> b) -> f a -> f b
+        > :t (*>)
+        (*>) :: Applicative f => f a -> f b -> f b
+        > :t (<*)
+        (<*) :: Applicative f => f a -> f b -> f a
+        > :t ($)
+        ($) :: (a -> b) -> a -> b
+        > :t fmap
+        fmap :: Functor f => (a -> b) -> f a -> f b
+        > :t (<=<)
+        (<=<) :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
+        > :t (.)
+        (.) :: (b -> c) -> (a -> b) -> a -> c
 
 
 .. vim:tw=60:
