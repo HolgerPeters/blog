@@ -5,6 +5,7 @@ Haskell by Types
 :date: 2016-04-10 22:00
 :tags: functional programming, haskell
 :category: haskell
+:status: draft
 
 Getting a better understand of Haskell has always been on my
 list. My typical toolbox for learning another programming
