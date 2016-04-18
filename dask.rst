@@ -1,6 +1,6 @@
-=====================================================================
-Python Data Science Going Functional  - Or: The Meaning of Benchmarks
-=====================================================================
+============================================================
+Python Data Science Going Functional - Or: Benchmarking Dask
+============================================================
 
 :date: 2016-04-17 20:00
 :modified: 2016-04-17 20:00
@@ -11,9 +11,8 @@ Python Data Science Going Functional  - Or: The Meaning of Benchmarks
 This weekend, I visited PyCon Italy in the pittoreque town
 of `Firenze <http://en.wikipedia.com/wiki/Florence>`_. It was
 a great conference with great talks and encounters (great
-thanks to all the volunteers who made it happen), yet I will
-probably remember it as the conference with the best coffee
-you can think of.
+thanks to all the volunteers who made it happen) and amazing
+coffee.
 
 I held a talk with the title "Python Data Science Going
 Functional" Science Track", where I mostly presented on
@@ -25,7 +24,7 @@ science eco system. Slides are available on speaker deck.
         <script async class="speakerdeck-embed" data-id="4e611c21c0564db3a37dc3db37cd4e1c" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 
 
-While creating the slides I stumbled over an exciting tweet
+While creating the slides I had stumbled over an exciting tweet
 by Travis Oliphant
 
 .. raw:: html
@@ -35,26 +34,25 @@ by Travis Oliphant
 
 And after verifying the results on my machine (with some
 modifications, as I do not trust ``timeit``), I included a
-very similar benchmark in my slides. My benchmark now also
-included two data points for Dask. One where the execution
-time of the `from_array
+very similar benchmark in my slides. While reproducing and
+adapting the benchmarks, I stumbled over some weirdly long
+execution times for the dask `from_array
 <http://dask.pydata.org/en/latest/array-api.html#dask.array.core.from_array>`_
-classmethod was included in the benchmark, and another data
-point where it wasn't included. Because, as I realized,
-``from_array`` was pretty slow and not included in `the
-original benchmark <https://anaconda.org/defusco/parallel_sum/notebook>`_.
+classmethod. So I included this finding in my talk's slides
+without really being able to attribute this delay to a
+specific reason.
 
-After delivering my talk, attributing slow performance to
-the ``from_array`` methods, I felt a bit unsatisfied. I just
-could not pinpoint why ``from_array`` was so slow. So I
-decided to ask. The answer: Dask hashes down the whole array
-in ``from_array`` to generate a key for it, which is the
-reason for it to be so slow. The solution to my problem is
-surprisingly simple. By passing a ``name='identifier'`` to
-the ``from_array``, one can provide a custom key, and
-``from_array`` is a suddenly a cheap operation. Thus, the
-two data points for dask approximately collapse into one
-data point, and we can improve the benchmark to read as
+After delivering my talk I felt a bit unsatisfied about
+this. Why did ``from_array`` perform so badly? So I decided
+to ask. The answer: Dask hashes down the whole array in
+``from_array`` to generate a key for it, which is the reason
+for it to be so slow. The solution is surprisingly simple.
+By passing a ``name='identifier'`` to the ``from_array``,
+one can provide a custom key and ``from_array`` is a
+suddenly a cheap operation. So the current state of my
+benchmark shows that Dask improves upon pure numpy or
+numexpr performance, however does not quite reach the
+performance of a Cython implementation:
 
 .. figure:: static/dask-corrected-benchmark.png
    :alt: A corrected benchmark showing execution times for dask, numexpr, numpy and parallelized Cython.
@@ -63,13 +61,24 @@ data point, and we can improve the benchmark to read as
    (NX), numpy (np) and Cython (with OpenMP parallelization)
    and Cython (including ``from_array``).
 
+The expression evaluated in that benchmark was
+
+.. code-block::
+
+    x = da.from_array(x_np, chunks=arr.shape[0] / CPU_COUNT, name='x')
+    mx = x.max()
+    x = (x / mx).sum() * mx
+    x.compute()
+
+Learnings
+---------
 
 What can we conclude from this?
 
 * The conversion overhead of converting a dask array to a
   numpy array is not as bad as I feared.
-* A bencharm of a library benchmarks both technical
-  efficiency of the implementation, as well as its usability
-  or proneness for operational errors.
-
-So, Dask is a viable alternative to parallelized Cython after all.
+* There are two aspects in a benchnark: performance and
+  usability.
+* Dask should be watched not only for out-of-core
+  computations, but also for parallelizing simple, blocking
+  numpy expressions.
