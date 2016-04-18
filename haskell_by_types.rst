@@ -99,8 +99,8 @@ While ``pure`` and ``<*>`` constitute a minimal
 implementation, typically the operators ``<*`` and ``*>``
 are also used, which discard some computation results
 instead of combining them like ``<*>``, this is very handy
-when writing `megaparsec
-<https://hackage.haskell.org/package/megaparsec-4.4.0#tutorials>`_
+when `writing megaparsec
+<https://hackage.haskell.org/package/megaparsec-4.4.0>`_
 parsers. My mnemonic to not confuse them: the angle bracket
 points to values the value not discarded:
 
@@ -410,7 +410,7 @@ For more detail on Haskell's types see the
 `Typeclassopedia <https://wiki.haskell.org/Typeclassopedia>`_.
 
 To familiarize yourself with Functors and Applicatives, it
-is really great to write parsers with `megaparsec
+is really great to write parsers with `Megaparsec
 <https://mrkkrp.github.io/megaparsec/>`_.
 
 `What I wish I knew when learning Haskell <http://dev.stephendiehl.com/hask/>`_ by
