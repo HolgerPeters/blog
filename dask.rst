@@ -6,7 +6,6 @@ Python Data Science Going Functional - Or: Benchmarking Dask
 :modified: 2016-04-17 20:00
 :tags: python, data-science
 :category: python
-:status: draft
 
 This weekend, I visited PyCon Italy in the pittoreque town
 of `Firenze <http://en.wikipedia.com/wiki/Florence>`_. It was
@@ -24,8 +23,13 @@ science eco system. Slides are available on speaker deck.
         <script async class="speakerdeck-embed" data-id="4e611c21c0564db3a37dc3db37cd4e1c" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 
 
-While creating the slides I had stumbled over an exciting tweet
-by Travis Oliphant
+Dask
+----
+
+The talk introduces Dask as a functional abstraction in the
+Python data science stack.  While creating the slides I had
+stumbled over an exciting tweet about Dask by Travis
+Oliphant
 
 .. raw:: html
 
@@ -63,12 +67,16 @@ performance of a Cython implementation:
 
 The expression evaluated in that benchmark was
 
-.. code-block::
+.. code-block:: python
 
     x = da.from_array(x_np, chunks=arr.shape[0] / CPU_COUNT, name='x')
     mx = x.max()
     x = (x / mx).sum() * mx
     x.compute()
+
+I revised the slides on Speakerdeck, to include the improved
+benchmark, so that they are not misleading for people who
+stumble on them without context.
 
 Learnings
 ---------
