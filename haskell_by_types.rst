@@ -98,12 +98,20 @@ function to bring values into an applicative context.
 While ``pure`` and ``<*>`` constitute a minimal
 implementation, typically the operators ``<*`` and ``*>``
 are also used, which discard some computation results
-instead of combining them like ``<*>``.
+instead of combining them like ``<*>``, this is very handy
+when writing `megaparsec
+<https://hackage.haskell.org/package/megaparsec-4.4.0#tutorials>`_
+parsers. My mnemonic to not confuse them: the angle bracket
+points to values the value not discarded:
 
 .. code-block:: haskell
 
    (*>)  :: Applicative f =>        f a -> f b -> f b -- discard the first value
    (<*)  :: Applicative f =>        f a -> f b -> f a -- discard the second value
+
+Just by looking at the type signature, you can infer that
+``(*>)`` keeps its right-hand-side value and discards the
+one to the left, because ``f a -> f b -> f b``
 
 Monad
 -----
