@@ -2,8 +2,8 @@
 Python Data Science Going Functional - Or: Benchmarking Dask
 ============================================================
 
-:date: 2016-04-17 20:00
-:modified: 2016-04-17 20:00
+:date: 2016-04-18 11:35
+:modified: 2016-04-18 11:35
 :tags: python, data-science
 :category: python
 
@@ -74,9 +74,9 @@ The expression evaluated in that benchmark was
     x = (x / mx).sum() * mx
     x.compute()
 
-I revised the slides on Speakerdeck, to include the improved
-benchmark, so that they are not misleading for people who
-stumble on them without context.
+I plan to upload a revised edition of the slides on Speakerdeck (once I have a
+decenet internet connection again), to include the improved benchmark, so that
+they are not misleading for people who stumble on them without context.
 
 Learnings
 ---------
