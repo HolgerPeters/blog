@@ -403,6 +403,118 @@ Monads are indeed a functional concept (and not -- like
 sometimes stated -- imperative programming in sheep's
 clothing).
 
+Example
+=======
+
+So far this blog post was a bit abstract, looking at type
+signatures and type signatures. So now we'll see an
+example: A parser for simple arithmetic expressions and see
+when we can use the applicative style shown above, and when
+not.
+
+The first parser is parsing `Reverse Polish Notation
+<https://www.wikiwand.com/en/Reverse_Polish_notation>`_
+style expressions, in RPN, the infix expression we are used
+to ``1 + 2 * 3`` would be written as
+``+ 1 * 2 3``, it is especially simple to parse in contrast
+to the more common infix notation. We use megaparsec here.
+
+First of all we need to import our parser library and the
+Identity functor.
+
+.. code-block:: haskell
+
+   import qualified Text.Megaparsec.Lexer as L
+   import Text.Megaparsec
+   import Data.Functor.Identity
+
+Now we define an algebraic datatype representing our
+computation: ``Term``. A term can either be an addition, a
+subtraction, a multiplication, a division, or an integer
+value here.
+
+.. code-block:: haskell
+
+   data Term = Add Term Term
+             | Sub Term Term
+             | Mul Term Term
+             | Div Term Term
+             | Val Integer
+             deriving (Show, Eq)
+
+Our parsing strategy is to always consume trailing
+whitespaces with every parsed term.
+
+.. code-block:: haskell
+
+   type RPNParser = ParsecT String Identity
+
+   trimTrailing = L.lexeme space
+
+   op :: String -> RPNParser String
+   op = trimTrailing . string
+
+
+Define multiplication, division, addition and subtraction
+expressions in applicative style (the next 5 expressions all
+have the type ``RPNParser Term``)
+
+.. code-block:: haskell
+
+   mult   = Add <$> (op "+" *> term) <*> term
+   divi   = Div <$> (op "/" *> term) <*> term
+   addi   = Mul <$> (op "*" *> term) <*> term
+   subt   = Sub <$> (op "-" *> term) <*> term
+   intval = Val <$> trimTrailing L.integer
+
+
+Now all left to do is define a parser for our expression
+as an alternative of all arithmetic operations:
+
+.. code-block:: haskell
+
+   term :: RPNParser Term
+   term =  mult
+       <|> divi
+       <|> addi
+       <|> subt
+       <|> intval
+
+Infix Parsing
+-------------
+
+If you are interested in infix parsing: it is way more
+complicated, because the language complexity is much higher.
+I.e. in infix parsing when the parser arrives at a number,
+it cannot easily know whether this number can stand alone,
+or whether it belongs to  a binary operation with the
+operator to the right (in ``3 * 4 + 5`` the parser would
+have to find out that 3 is part of a multiplication
+expression, and then find out that the multiplication is
+part of an addition expression later on).
+
+Luckily the megaparsec library has utilities to make parsing
+infix notation easier. I included a snippet for
+completeness.
+
+.. code-block:: haskell
+
+   parens = between (symbol "(") (symbol ")")
+            where symbol = L.symbol space
+
+   infixExpr = makeExprParser infixTerm table
+
+   infixTerm = parens infixExpr
+            <|> intval
+
+   table = [ [ InfixL (op "*" >> return Mul)
+             , InfixL (op "/" >> return Div)]
+           , [ InfixL (op "+" >> return Add)
+             , InfixL (op "-" >> return Sub)]]
+
+We can see at least here, that for this kind of a problem
+applicatives are not enough and we need Monads.
+
 Resources
 =========
 
