@@ -30,6 +30,14 @@ common abstractions, and point out some patterns and
 parallels in them (and as it turns out, these are not only
 parallels in the type signatures, but in semantics too.)
 
+With all the talk about Monads, a lot of introductory
+material kind of leaves out Functors, Applicative Functors
+und the merrits of Applicative Functor style. If you have so
+far diligently learned some Haskell, but were put off by
+Haskell's liberal use of *weird* operators, applicative
+Functor style will show you how operators can be used for
+great benefit.
+
 The following compilation is of things I rather understood
 recently, so bear in mind, that I might have missed one or
 the other connection.
@@ -71,8 +79,8 @@ Functor
 
 In a functional, statically typed programming language
 without the mathematical obsession of the haskell community,
-a functor might have been named "Mappable". Haskell took the
-name Functor from a `mathematical concept in category theory
+a Functor might have been named "Mappable". Haskell took the
+name Functor [#f5]_ from a `mathematical concept in category theory
 <http://www.wikipedia.com/wiki/Functor>`_
 
 .. code-block:: haskell
@@ -86,7 +94,7 @@ Applicative
 -----------
 
 An Applicative is a special kind of Functor, that extends
-functors. It features the operator ``<*>`` for sequencing
+Functors. It features the operator ``<*>`` for sequencing
 computations (combining their results), and ``pure``, a
 function to bring values into an applicative context.
 
@@ -161,9 +169,9 @@ map from one type ``a`` to the other ``b`` (in the case of
 The second operand is the argument to the application. In
 the case of normal function application this is plainly the
 function argument, with the Functor ("Mappable") it is a
-functor, in the case of the applicative it is an applicative.
+Functor, in the case of the applicative it is an applicative.
 
-The result of the operation is either of type ``b``, functor
+The result of the operation is either of type ``b``, Functor
 of ``b`` or applicative of ``b``.
 
 One instance of Functor and Applicative (a Functor is
@@ -182,7 +190,7 @@ the three applying operators:
 
 In Haskell, the list type implements ``Monad``, which means
 it also is an ``Applicative`` and a ``Functor``.
-Treating the list as a functor, we can apply the function
+Treating the list as a Functor, we can apply the function
 that increments by 10 to each element, and treating the list
 as an applicative, we can sequentially join two lists by
 adding their elements (building the sum of the cartesian
@@ -420,7 +428,7 @@ to ``1 + 2 * 3`` would be written as
 to the more common infix notation. We use megaparsec here.
 
 First of all we need to import our parser library and the
-Identity functor.
+Identity Functor.
 
 .. code-block:: haskell
 
@@ -483,15 +491,15 @@ as an alternative of all arithmetic operations:
 Infix Parsing
 -------------
 
-If you are interested in infix parsing: it is way more
-complicated, because the language complexity is much higher.
-I.e. in infix parsing when the parser arrives at a number,
-it cannot easily know whether this number can stand alone,
-or whether it belongs to  a binary operation with the
-operator to the right (in ``3 * 4 + 5`` the parser would
-have to find out that 3 is part of a multiplication
-expression, and then find out that the multiplication is
-part of an addition expression later on).
+If you are interested in infix parsing: it is
+algorithmically more complex.  I.e. in infix parsing when
+the parser arrives at a number, it cannot easily know
+whether this number can stand alone, or whether it belongs
+to a binary operation with the operator to the right (in ``3
+* 4 + 5`` the parser would have to find out that 3 is part
+of a multiplication expression, and then find out that the
+multiplication is part of an addition expression later
+on).
 
 Luckily the megaparsec library has utilities to make parsing
 infix notation easier. I included a snippet for
@@ -606,7 +614,7 @@ Footnotes
 
 .. [#f4] My first intuition here was to use monadic
    functionality  (``>>=``), yet as it turns out,
-   functor and applicative (``<*>``) is enough. This
+   Functor and applicative (``<*>``) is enough. This
    confused me: If applicatives were about sequential
    actions, where the current item does not know about its
    predecessor, how could it increment the state-monads
@@ -630,5 +638,8 @@ Footnotes
    .. code-block:: haskell
 
       (>>=)  :: Monad m =>        m a -> (a -> m b) -> m b
+
+.. [#f5] In Haskell, Functors are something entirely
+         different from Functors in C++.
 
 .. vim:tw=60:
