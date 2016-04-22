@@ -3,6 +3,7 @@ Haskell by Types
 ================
 
 :date: 2016-04-21 21:00
+:modified: 2016-05-22 08:00
 :tags: functional programming, haskell
 :category: haskell
 
@@ -433,7 +434,7 @@ Identity Functor.
 
    import qualified Text.Megaparsec.Lexer as L
    import Text.Megaparsec
-   import Data.Functor.Identity
+   import Text.Megaparsec.String
 
 Now we define an algebraic datatype representing our
 computation: ``Term``. A term can either be an addition, a
@@ -454,17 +455,15 @@ whitespaces with every parsed term.
 
 .. code-block:: haskell
 
-   type RPNParser = ParsecT String Identity
-
    trimTrailing = L.lexeme space
 
-   op :: String -> RPNParser String
+   op :: String -> Parser String
    op = trimTrailing . string
 
 
 Define multiplication, division, addition and subtraction
 expressions in applicative style (the next 5 expressions all
-have the type ``RPNParser Term``)
+have the type ``Parser Term``)
 
 .. code-block:: haskell
 
@@ -480,7 +479,7 @@ as an alternative of all arithmetic operations:
 
 .. code-block:: haskell
 
-   term :: RPNParser Term
+   term :: Parser Term
    term =  mult
        <|> divi
        <|> addi
