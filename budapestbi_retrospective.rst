@@ -5,6 +5,7 @@ BudapestBI Retrospective
 :modified: 2015-10-29 21:27
 :tags: Speaking, Data-Science
 :category: Data-Science
+:summary: Contemplations on the Budapest BI conference where I had been invited to give a talk (also, link to Slides).
 
 I finally managed to write up `my retrospective blog post
 <http://www.blue-yonder.com/blog-e/2015/10/29/summary-budapest-bi-forum-science-meets-business/>`_
