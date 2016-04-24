@@ -4,7 +4,7 @@ Python Data Science Going Functional - Or: Benchmarking Dask
 
 :date: 2016-04-18 11:35
 :modified: 2016-04-18 11:35
-:tags: python, data-science
+:tags: Python, Data-Science, Speaking
 :category: python
 
 This weekend, I visited PyCon Italy in the pittoreque town

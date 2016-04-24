@@ -3,8 +3,8 @@ Talking at Budapest BI
 
 :date: 2015-10-05 20:00
 :modified: 2015-10-05 20:00
-:tags: speaking
-:category: data-science
+:tags: Speaking, Data-Science
+:category: Data-Science
 
 
 I am delighted to be invited at `Budapest BI Forum 2015

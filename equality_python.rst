@@ -4,7 +4,7 @@ Identical Objects Do Not Imply Equality In Python
 
 :date: 2016-01-07 20:41
 :modified: 2016-01-07 21:16
-:tags: python, interpreters, ruby
+:tags: Python, Interpreter, Ruby
 :category: python
 
 Python has two very similar comparison operators: ``==`` for equality and

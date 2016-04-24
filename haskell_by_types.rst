@@ -1,11 +1,14 @@
-================
-Haskell by Types
-================
+=========================
+Learning Haskell by Types
+=========================
 
+:slug: haskell-by-types
 :date: 2016-04-21 21:00
-:modified: 2016-05-22 08:00
-:tags: functional programming, haskell
-:category: haskell
+:modified: 2016-04-24 18:17
+:tags: Functional Programming, Haskell
+:category: Haskell
+:summary: With all the talk about Monads, a lot of introductory material kind of leaves out Functors, Applicative Functors und the merrits of Applicative Functor style. If you have so far diligently learned some Haskell, but were put off by Haskell's liberal use of *weird* operators, applicative Functor style will show you how operators can be used for great benefit.
+
 
 Getting a better understand of Haskell has always been on my
 list. My typical toolbox for learning another programming

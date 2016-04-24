@@ -4,7 +4,7 @@ An Interesting Fact About The Python Garbage Collector
 
 :date: 2016-02-16 20:34
 :modified: 2016-02-16 20:34
-:tags: python
+:tags: Python, Interpreter
 :category: python
 
 While Python prides itsself of being a simple, straightforward programming

@@ -3,7 +3,7 @@ Things to consider before writing a library
 ===========================================
 
 :date: 2016-04-10 22:00
-:tags: python, engineering, software
+:tags: Python, Engineering, Software
 :category: python
 :status: draft
 

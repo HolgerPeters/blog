@@ -3,8 +3,8 @@ BudapestBI Retrospective
 
 :date: 2015-10-29 21:27
 :modified: 2015-10-29 21:27
-:tags: speaking
-:category: data-science
+:tags: Speaking, Data-Science
+:category: Data-Science
 
 I finally managed to write up `my retrospective blog post
 <http://www.blue-yonder.com/blog-e/2015/10/29/summary-budapest-bi-forum-science-meets-business/>`_

@@ -4,7 +4,7 @@ Improve your Python code with these N simple steps
 
 :date: 2015-10-10 20:00
 :modified: 2015-10-25 13:20
-:tags: testing, python
+:tags: Testing, Python
 :category: python
 :status: draft
 

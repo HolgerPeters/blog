@@ -4,7 +4,7 @@ Objects All The Way Down
 
 :date: 2015-11-22 23:12
 :modified: 2015-11-22 23:14
-:tags: python, smalltalk, pharo, programming languages
+:tags: Python, Smalltalk, Pharo, Programming Languages
 :category: python
 :summary: After researching `the backgrounds of Python's unittest module <http://www.holger-peters.de/why-i-use-pytest.html>`_ I got curious about `Smalltalk <http://en.wikipedia.org/wiki/Smalltalk>`_, one of the first truly object-oriented programming languages. I looked into it (more specific, I played around with `Pharo <pharo>`__) and if you like, this blog post will take you along this journey using a `Rosetta Stone <https://en.wikipedia.org/wiki/Rosetta_Stone>`_ approach by writing Python and Smalltalk snippets next to each other.
 

@@ -4,7 +4,7 @@ State
 
 :date: 2015-11-11 20:00
 :modified: 2015-11-11 13:20
-:tags: engineering simplicity
+:tags: Engineering, Simplicity
 :category: simplicity
 
 My smart phone has 2 great features. When I listen to something with my head

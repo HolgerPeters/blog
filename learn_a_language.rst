@@ -3,7 +3,7 @@ Learn a Language
 
 :date: 2015-10-08 20:00
 :modified: 2015-10-08 20:00
-:tags: curiosity, linguistics
+:tags: Linguistics
 :category: food for thought
 
 Some common advice among developers is to learn "a

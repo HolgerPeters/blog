@@ -4,7 +4,7 @@ Why I use py.test
 
 :date: 2015-10-10 20:00
 :modified: 2015-10-25 13:20
-:tags: testing, python
+:tags: Testing, Python
 :category: python
 :summary:  Writing readable and maintainable unit tests is crucial to the success of your Python project. For Python, the unittest module, nosetests and py.test are the most commonly used framework for writing unit tests, and so when you start a project, if no one takes the decision for you, you will have to choose between the three. Over the years, I have become a huge fan of ``py.test``, a mature and well-maintained testing package for Python. That's why I would like to summarize the reasons for me liking ``py.test`` and explain which features make it an indispensable tool for Python development.
 
