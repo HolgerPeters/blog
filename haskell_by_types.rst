@@ -11,7 +11,7 @@ Learning Haskell by Type (Signatures)
 
 
 Getting a better understand of Haskell has always been on my
-list. My typical toolbox for learning another programming
+list. My typical toolbox [#f2]_ for learning another programming
 language is not so effective with Haskell, because in contrast to
 say - Ruby [#f3]_  - learning Haskell requires me to learn
 new concepts. On the other hand, Haskell offers some unique
@@ -50,7 +50,7 @@ Overview
 
 The purpose of this blog post is to explain some properties
 of typical Haskell type classes by looking at the type
-signatures of their member functions. So first of all, the
+signatures [#f1]_ of their member functions. So first of all, the
 objective is to have these signatures ready for reading.
 The following signatures were infered by looking for the type
 signatures interactively in ghc's ghci prompt. One can also
