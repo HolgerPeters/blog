@@ -177,8 +177,8 @@ Functor, in the case of the applicative it is an applicative.
 The result of the operation is either of type ``b``, Functor
 of ``b`` or applicative of ``b``.
 
-One instance of Functor and Applicative (a Functor is
-always an Applicative) is the list ``[]`` type.
+One instance of Functor and Applicative (an Applicative is
+always a Functor) is the list ``[]`` type.
 The following ghci interactive session will demonstrate
 the three applying operators:
 
@@ -255,7 +255,7 @@ various applicatives in the Haskell's std. library
    []
 
 Using a lifted function gives you the impression of working
-with ordinary functions, the symmetry between ``f $ x y`` and
+with ordinary functions, the symmetry between ``(f $ x) y`` and
 ``f <$> x <*> y`` makes this possible.
 
 Applicative Style
