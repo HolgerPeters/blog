@@ -391,7 +391,7 @@ write the signatures of the lambda functions to the right.
 We can kind of identify the signature of ``(<=<)`` just by
 looking at this. Now spell out the lambda functions in
 point-free style (I called them ``f,g,h``) and we can
-implement the ``printLengthPrint`` function by Kleiski's
+implement the ``printLengthPrint`` function by Kleisli's
 composition
 
 .. code-block:: haskell
