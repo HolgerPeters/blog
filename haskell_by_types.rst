@@ -1,6 +1,6 @@
-=========================
-Learning Haskell by Types
-=========================
+=====================================
+Learning Haskell by Type (Signatures)
+=====================================
 
 :slug: haskell-by-types
 :date: 2016-04-21 21:00
