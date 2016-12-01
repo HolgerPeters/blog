@@ -131,9 +131,8 @@ Monads are also Applicatives and Functors, i.e. they also implement
 {% highlight haskell %}
 -- Sequentially compose two actions, passing any value produced
 -- by the first as an argument to the second
-(>>=)  :: Monad m =>        m a -> (a -> m b) -> m b        --
-return :: Monad m =>      a -> m a
-
+(>>=)  :: Monad m =>        m a -> (a -> m b) -> m b
+return :: Monad m =>   a -> m a
 (>>)   :: Monad m =>        m a ->        m b -> m b        -- discards value of first monad
 (<=<)  :: Monad m => (b -> m c) -> (a -> m b) -> (a -> m c) -- kleisli composition
 {% endhighlight %}
