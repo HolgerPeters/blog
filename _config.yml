@@ -1,0 +1,11 @@
+title: Blog of Holger Peters
+email: email@holger-peters.de
+description: > # this means to ignore newlines until "baseurl:"
+  A blog on programming, data-science and everything else that interests me.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://www.holger-peters.de"
+twitter_username: data_hope
+github_username:  HolgerPeters
+
+# Build settings
+markdown: kramdown
