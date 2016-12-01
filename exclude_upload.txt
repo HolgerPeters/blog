@@ -1,2 +1,4 @@
 Gemfile
 Gemfile.lock
+exclude_upload.txt
+transfer.sh
