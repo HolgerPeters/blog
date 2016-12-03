@@ -3,7 +3,9 @@ layout: post
 category: python
 date: '2016-02-16 20:34'
 modified: '2016-02-16 20:34'
-tags: 'Python, Interpreter'
+tags:
+ - Python
+ - Interpreter
 title: An Interesting Fact About The Python Garbage Collector
 permalink: an-interesting-fact-about-the-python-garbage-collector.html
 ---

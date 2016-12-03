@@ -11,7 +11,9 @@ summary: |
     Functor style. If you have so far diligently learned some Haskell, but
     were put off by Haskell's liberal use of *weird* operators, applicative
     Functor style will show you how operators can be used for great benefit.
-tags: 'Functional Programming, Haskell'
+tags:
+ - Functional Programming
+ - Haskell
 permalink: haskell-by-types.html
 ---
 

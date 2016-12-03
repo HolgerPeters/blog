@@ -8,7 +8,10 @@ summary: |
     has made rounds lately, and compelled me to write a partial rebuttal. It
     is not like that blog post is completely wrong, but it is not the be-all
     and end-all of this topic. And if I may add, it is kind of opinionated.
-tags: 'Python, Clean Code, Best Practice'
+tags:
+ - Python
+ - Clean Code
+ - Best Practice
 title: 'Exceptions - The Dark Side of the Force'
 permalink: exceptions-the-dark-side-of-the-force.html
 ---

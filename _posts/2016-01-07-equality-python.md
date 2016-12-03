@@ -3,7 +3,10 @@ layout: post
 category: python
 date: '2016-01-07 20:41'
 modified: '2016-01-07 21:16'
-tags: 'Python, Interpreter, Ruby'
+tags:
+ - Python
+ - Interpreter
+ - Ruby
 title: Identical Objects Do Not Imply Equality In Python
 permalink: identical-objects-do-not-imply-equality-in-python.html
 ---

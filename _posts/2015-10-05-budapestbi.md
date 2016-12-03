@@ -4,7 +4,9 @@ title: Talking at Budapest BI
 date: '2015-10-05 20:00'
 category: 'Data-Science'
 modified: '2015-10-05 20:00'
-tags: 'Speaking, Data-Science'
+tags:
+ - Speaking
+ - Data-Science
 permalink: talking-at-budapest-bi.html
 ---
 

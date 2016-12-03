@@ -3,7 +3,8 @@ layout: post
 category: food for thought
 date: '2015-10-08 20:00'
 modified: '2015-10-08 20:00'
-tags: Linguistics
+tags:
+ - Linguistics
 title: Learn a Language
 permalink: learn-a-language.html
 ---

@@ -12,7 +12,11 @@ summary: |
     this blog post will take you along this journey using a [Rosetta
     Stone](https://en.wikipedia.org/wiki/Rosetta_Stone) approach by writing
     Python and Smalltalk snippets next to each other.
-tags: 'Python, Smalltalk, Pharo, Programming Languages'
+tags:
+ - Python
+ - Smalltalk
+ - Pharo
+ - Programming Languages
 title: Objects All The Way Down
 permalink: objects-all-the-way-down.html
 ---
