@@ -3,7 +3,7 @@ layout: null
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
- <title>{{ site.title | xml_escape }} - Python Feed</title>
+ <title>{{ site.title | xml_escape }} - Haskell Feed</title>
  <author><name>Holger Peters</name></author>
  <link href="http://www.holger-peters.de/" rel="alternate"></link>
  <link href="http://www.holger-peters.de/feeds/python.atom.xml" rel="self"></link>
