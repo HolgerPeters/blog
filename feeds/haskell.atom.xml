@@ -1,0 +1,24 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ <title>{{ site.title | xml_escape }} - Python Feed</title>
+ <author><name>Holger Peters</name></author>
+ <link href="http://www.holger-peters.de/" rel="alternate"></link>
+ <link href="http://www.holger-peters.de/feeds/python.atom.xml" rel="self"></link>
+ <id>http://www.holger-peters.de/</id>
+ <updated>{{ site.time | date_to_rfc822 }}</updated>
+{% for post in site.posts  %}
+{% if post.tags contains "Haskell" %}
+   <entry>
+    <title>{{ post.title | xml_escape }}</title>
+    <link href="{{ post.url | prepend: site.baseurl | prepend: site.url }}" rel="alternate"></link>
+    <published>{{ post.date | date_to_rfc822 }}</published>
+    <content type="html">{{ post.content | xml_escape }}</content>
+    <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
+    <id>{{ post.url | prepend: site.baseurl | prepend: site.url }}</id>
+   </entry>
+{% endif %}
+{% endfor %}
+</feed>
