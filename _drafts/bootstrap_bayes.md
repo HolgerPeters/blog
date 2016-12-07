@@ -11,49 +11,53 @@ title: "Bayes'n'Bootstrap"
 
 With the advent of machine learning into our IT landscapes,
 a previously rather academic conflict of the statistical
-community is now on stage quite often. It is the question of
-*Frequentism* vs. *Bayesianism*. The debate is often lead
-with emotions that you can only find among people defending
-their favourite editors. Yet Frequentism vs Bayesianism
-isn't your usual bike shedding discussion, it is the custody
-trial to determine who may claim the interpretational
-sovereignty over nothing less than the *Theory of
-Probability*.
+community is now often on stage. It is the question of
+*Frequentism* vs. *Bayesianism*. This debate, often one that
+is as emotional as the famous *editor-wars*, is in fact a
+very fundamental one that touches the foundations of
+statistics and probability theory. In that sense, it isn't
+your usual bike shedding discussion, even if it is sometimes
+lead as one. Metaphorically, it is a custody trial to
+determine who may claim the interpretational sovereignty
+over nothing less than the *Theory of Probability*.
 
-In a nutshell, frequentism and bayesianism are both
-established approaches to statistics. Frequentism treats
-probabilities as quotients of frequencies of outcomes of
-statistical experiments of an infinite number of trials;
-frequentist practitioners will tell you that finite number
-of trials will also suffice (as in: from 100 coin flips, 50
-times we will obtain *head*, thus the probability for head
-is $$\wp(H=1)=0.5$$). For Bayesianists, probabilities aren't
-primarily ratios of frequencies, but rather **degrees of
-belief** which can be calculated using Bayes' theorem.
+In a nutshell, frequentism and Bayesianism are both
+established approaches to statistics. Their differences
+start, with their core definitions. Frequentism treats
+probabilities as ratios of frequency-counts collected from
+an infinite number of trials; and frequentist practitioners
+will tell you that a finite number of trials will also
+suffice (as in: from 100 coin flips, 50 times we will obtain
+*head*, thus the probability for head is $$\wp(H=1)=0.5$$).
 
-A programmer might immediately think of it as extending
-Boolean algebra with `true` (1) and `false` (0) to a
-spectrum of values $$0 \ldots 1$$.. A bayesianist would read
-the probability $$\wp(H=1)=0.5$$ in the coin-flip above more
-like "It is credible, that head and non-head (tail) are
-results of a coin flip, without one option being more likely
-than the other".
+For Bayesianists, probabilities are **degrees of belief**;
+also Bayesianists use Bayes' theorem for inference.  A
+Bayesianist would take the probability $$\wp(H=1)=0.5$$ in
+the coin-flip example above to mean something like "It is
+credible, that head and non-head (tail) are results of a
+coin flip, without one option being more likely than the
+other". A programmer can think of the Bayesian
+interpretation of probabilities as an extension of Boolean
+algebra: `true` (1, *firm-belief*) and `false` (0,
+*firm-disbelief*)  are complemented with a spectrum of
+values $$0 \ldots 1$$.
 
 These brief characterizations are already enough to
-understand many common points in the discussion of both
-methods
+understand much of the criticism either method faces:
 
 * Bayesian probabilities are criticised as "subjective" or
   as not a genuine measurement parameter (degree of belief).
 * Frequentist probabilities are said to be limited to
   infinitely repeatable trials, and thus not applicable to
-  any real world data set.
+  any real world data set, with a finite number of
+  measurements.
 
-This criticism is too simplistic, however. And
-probably there are embarassingly (to those who strongly
-associate with one camp) many commonalities of the methods.
-In this post I will show you how you can solve a problem
-with both methods and compare the results.
+This criticism is too simplistic, however. And to those, who
+strongly associate with one camp, there are probably many
+embarassing commonalities: Both approaches often lead to
+very similar results. In this post I will show you how you
+can solve a problem with both methods and compare the
+results.
 
 # Estimating The Probability for a Bernoulli-Trial
 
@@ -62,12 +66,14 @@ coin, we expect to roughly obtain head half of the times,
 and tail the other half of the times. Yet there are many
 processes with two outcomes, where we don't know the
 individual probabilities beforehand. For example, a
-researcher might be interested in an immunization rate.
+researcher might be interested in the immunization rate of a
+population.
 
 Our researcher determines the immunization rate of $$N=40$$
-people. For example, if the researcher conducted the
-experiment for $$N=40$$ people, the results could be (1 for immunized and 0 for
-not-immunized): `[1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 0 1 1 0 1 1 1 1 1 1 1]`.
+people. The measured results could be  a series of numbers
+(1 for immunized and 0 for not-immunized) like: `[1 1 1 1 1
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 0 1 1 0 1 1
+1 1 1 1 1]`.
 
 The questions we are bound to solve are
 
@@ -76,7 +82,7 @@ The questions we are bound to solve are
  * How reliable (and under what circumstances) would that
    inferred probability be?
 
-# Frequentist Approach
+# Frequentist Approaches
 
 ## Naïve Frequentist Treatment
 
@@ -140,11 +146,11 @@ plt.ylabel("Occurences")
 ![histogram](/assets/images/histogram.png)
 
 Depending on the subsample, we get different results for the
-calculated rate, the calculated rate of subsamples is
-distributed. We must assume that the rates calculated in the naïve approach
-above is just as noisy as the rates calculated in the
-bootstrap approach, because we assume independence of the
-individual events. So the bootstrapped rate distribution
+calculated rate. All calculated rates from a distribution.
+We must assume, that the single rate calculated in the naïve
+approach above is just as noisy as the rates calculated in
+the bootstrap approach, because we assume independence of
+the individual events. So the bootstrapped rate distribution
 gives us an idea on how credible and accurate the naïve rate
 is.
 
@@ -156,13 +162,12 @@ theorem, you can just scroll down to the heading
 
 ## Bayes Theorem
 
-Bayes' theorem is the central hub of Bayesian methods. It is
-however not a postulated assumption, that has stood the test
-of time (like Schrödinger's Equation in physics for
-example), but a direct consequence of *conditional
+Bayes' theorem is the central hub of Bayesian methods. It
+is, however, not a postulated assumption, just happening to
+work, but a direct consequence of *conditional
 probabilities*. If you look at the probability for two
-propositions $$A$$ and $$B$$ to be true &mdash;
-$$ \wp(A, B)$$ &mdash; you can express this joint probability by
+propositions[^prop] $$A$$ and $$B$$ &mdash; $$ \wp(A,
+B)$$ &mdash; you can express this joint probability by
 conditional probabilities:
 
 $$
@@ -183,7 +188,7 @@ wet street.
 We can rearrange the above equation dividing through $$
 \wp(B)$$ on both sides and get an equation that expresses
 the conditional probability $$\wp(A\mid B)$$ by the inverse
-probability %$\wp(B\mid A)$$.
+probability $$\wp(B\mid A)$$.
 
 $$
 \wp(A\mid B) = \frac{\wp(B \mid A)}{\wp(B)} \wp(A)
@@ -191,11 +196,19 @@ $$
 
 Until now, *I think*, Frequentists and Bayesianists can
 agree. The disagreement starts on when and how to use this
-equation. Bayesian statistics is concerned with data $$D$$
+equation. Bayesianists infer (conclude) $$ \wp(A\mid B) $$
+on the left side of the equation from the right hand side.
+Whereas critics of Bayesianism consider this to be a
+dangerous endeavour.
+
+
+### Bayes' Theorem and model estimation
+
+Bayesian statistics is concerned with data $$D$$
 and a model $$M$$ (a fit parameter, a parameter of a
 distribution, a quantity that should be inferred). By
 substituting $$A\to M, B \to D$$, we get Bayes' theorem with
-bayesian semantics:
+Bayesian semantics:
 
 $$
 \wp(M\mid D) = \frac{\wp(D \mid M)}{\wp(D)} \wp(M)
@@ -227,19 +240,23 @@ come up with a likelihood, than to come up with the
 $$\wp(M\mid D)$$ directly.
 
 
-## Bayesian Treatment
+## Bayesian Estimation of Immunization Rates
 
 The immunization rate that we are looking for is a
-probability (in the frequentist sense). Nevertheless,
+probability (in the frequentist sense). Nevertheless, it is
+in the bayesian sense a model parameter $$ M $$, whose
+distribution can be inferred using Bayes' theorem.
 
 We assume, that the classification immunized vs.
 not-immunized is a Bernoulli-trial of a random variable
 $$x$$. The immunization rate $$\mu$$ is then a parameter of
 the Bernoulli distribution: $$\text{Bernoulli}(x\mid
 \mu)$$, and at the same time, it is our model, i.e.
-$$M=\mu$$. Our inference problem can be solved if we can
-can find a likelihood function $$\wp(D\mid \mu)$$ for our
-observed data.
+$$M=\mu$$, and we would like to find the distribution for
+this parameter $$ \wp(\mu\mid D) $$. Our inference problem
+can be solved if we can find an expression for the
+right-hand side of Bayes' theorem. First, we will ignore the
+denominator, which is more of a normalization parameter.
 
 $$
 \wp(\mu\mid D) \propto \wp(D \mid \mu) \wp(\mu)
@@ -305,7 +322,6 @@ for the bootstrap method to the plot:
 
 ![learn curve of both](/assets/images/learncurve-both.png)
 
-
 What we can see here is, that with enough data points, both
 methods give very similar results, to the point where they
 seem equivalent.
@@ -329,8 +345,8 @@ fewer data points. Why is that?
   parameter).
 
 The subtle, systematic difference that remains between the
-bayesian and the bootstrap method for larger sample sizes
-(the bayesian rate is consistently smaller than the
+Bayesian and the bootstrap method for larger sample sizes
+(the Bayesian rate is consistently smaller than the
 bootstrapped rate) is the influence of the prior, that never
 completely vanishes (although it is negligible given the
 statistical fluctuations).
@@ -355,3 +371,7 @@ statistical fluctuations).
     It doesn't have a much of a canonical name. Calling it
     the *evidence* is popular. Since $$\wp(D) = \sum \wp(D
     \mid M_i) \wp(M_i)$$, I like "marginalized likelihood".
+
+[^prop]:
+    A proposition is a statement that can either be true or
+    false.
