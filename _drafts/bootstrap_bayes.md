@@ -223,10 +223,10 @@ The probabilities involved are:
 
   We also call this quantity the *posterior*.
 * $$\wp(D\mid M)$$ is the probability for data, given the
-  model. This is the *likelihood* [^1].
+  model. This is the *likelihood* [^likelihood].
 * $$\wp(M)$$ is the prior, a probability (distribution), that
   is independent of $$D$$.
-* $$\wp(D)$$ is the probability for data[^2]. For this
+* $$\wp(D)$$ is the probability for data[^evidence]. For this
   treatment here, we can think of it as a normalization
   constant (which can be very costly to compute).
 
@@ -357,7 +357,7 @@ statistical fluctuations).
 
 # Footnotes
 
-[^1]:
+[^likelihood]:
 
     It is often said, that the likelihood isn't a
     probability (distribution), but some other function.
@@ -367,7 +367,7 @@ statistical fluctuations).
     probability
     (distribution) in that context.
 
-[^2]:
+[^evidence]:
     It doesn't have a much of a canonical name. Calling it
     the *evidence* is popular. Since $$\wp(D) = \sum \wp(D
     \mid M_i) \wp(M_i)$$, I like "marginalized likelihood".
