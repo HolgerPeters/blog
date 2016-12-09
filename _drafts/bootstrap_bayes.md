@@ -84,12 +84,21 @@ The questions we are bound to solve are
 
 # Frequentist Approaches
 
-## Naïve Frequentist Treatment
+I divided this section into three parts
+
+1. first we apply a common-sense approach to the problem
+2. then, we see that our first approach is in fact the
+   solution of the maximum-likelihood approach
+3. we apply the bootstrap method to get more than just the
+   maximum-likelihood estimate of the immunization rate.
+
+## Common-sense (naïve) Treatment
 
 A very simple approach to this problem is to just count the
 number of immunized and the number of people screened. for
-the above list, we have 34 immunized people of a total of 40
-people, which leads to an immunization probability of $$0.85$$.
+the above list, we have $$k = 34$$ immunized people of a
+total of $$ N = 40 $$ people, which leads to an immunization
+probability of $$0.85$$.
 
 If the researcher had only screened the first 20 people, the
 result would have looked a bit different, $$0.95$$. If we
@@ -99,7 +108,61 @@ we have a method that gives us immunization rates, yet it
 heavily depends on the sample size.  Also, we don't have a
 means to quantify how certain we are about these enumbers.
 
-## Frequentist Treatment with the Bootstrap Method
+## Maximum Likelihood Estimate
+
+The likelihood-function $$L(\mu \mid N, k)$$ is the
+probability $$k$$ immunized subjects of $$N$$ subjects in
+total, under the condition of a parameter $$ \mu $$, which
+we'll write down as $$ \wp(N, k \mid \mu) $$. We identify,
+that his $$ \wp(N, k \mid \mu) $$ is the [binomial
+distribution](https://www.wikiwand.com/en/Binomial_distribution).
+
+$$
+L(\mu) = \wp(N, k \mid \mu) = \text{Binomial}(k\mid N, \mu) = \binom N k  \mu^k(1-\mu)^{N-k}
+$$
+
+We now want to find the $$\mu$$ that maximizes the
+likelihood $$L(\mu)$$. We could of course work out the
+equations by hand. I use [sympy](www.sympy.org) here, which
+will do all the tiresome calculations for us:
+
+    In [1]: N, k, mu = symbols("N, k, mu")
+    In [2]: likelihood = binomial(N, k) * mu**k * (1-mu)**(N-k)
+
+Sympy will nicely render the likelihood term
+
+    In [3]: likelihood
+    Out[3]:
+     k         N - k ⎛N⎞
+    μ ⋅(-μ + 1)     ⋅⎜ ⎟
+                     ⎝k⎠
+
+Now let's see if sympy can come up with the derivative with
+respect to $$ \mu $$:
+
+    In [4]: diff(likelihood, mu)
+    Out[4]:
+       k         N - k ⎛N⎞    k                  N - k ⎛N⎞
+    k⋅μ ⋅(-μ + 1)     ⋅⎜ ⎟   μ ⋅(-N + k)⋅(-μ + 1)     ⋅⎜ ⎟
+                       ⎝k⎠                             ⎝k⎠
+    ────────────────────── + ─────────────────────────────
+              μ                          -μ + 1
+
+Finally, we are only interested in the value of $$\mu$$,
+for which the derivative is zero.
+
+    In [5]: solve(diff(likelihood, mu), mu)
+    Out[5]:
+    ⎡k⎤
+    ⎢─⎥
+    ⎣N⎦
+
+**Result:** We obtain $$\mu = \frac{k}{N}$$ as as the
+maximum likelihood estimate, which basically is what we
+expected as the naïve result.
+
+
+## The Bootstrap Method
 
 We can use the fact, that different subsets of our data
 yield different results, to get a better picture of the
@@ -147,12 +210,12 @@ plt.ylabel("Occurences")
 
 Depending on the subsample, we get different results for the
 calculated rate. All calculated rates from a distribution.
-We must assume, that the single rate calculated in the naïve
-approach above is just as noisy as the rates calculated in
-the bootstrap approach, because we assume independence of
-the individual events. So the bootstrapped rate distribution
-gives us an idea on how credible and accurate the naïve rate
-is.
+We must assume, that the single rate calculated in the
+maximum likelihood approach above is just as noisy as the
+rates calculated in the bootstrap approach, because we
+assume independence of the individual events. So the
+bootstrapped rate distribution gives us an idea on how
+credible and accurate the maximum-likelihood rate is.
 
 # Bayesian Approach
 
@@ -353,6 +416,15 @@ statistical fluctuations).
 
 # Conclusion
 
+There are many conclusions that one can draw from this
+simple example. Of course not everything that we can learn
+from this example generalize to all questions about Bayes
+and Frequentism. So I'll limit my conclusion here to the
+one very simple advice: I learned a lot more about
+statistical methods and algorithms by constantly looking at
+how Bayesianists and Frequentists approach and derive them.
+Most statistical topics are treated in bayesian and
+frequentist literature.
 
 # Notes
 
