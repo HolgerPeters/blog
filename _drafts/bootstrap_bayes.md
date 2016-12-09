@@ -110,12 +110,12 @@ means to quantify how certain we are about these enumbers.
 
 ## Maximum Likelihood Estimate
 
-The likelihood-function $$L(\mu \mid N, k)$$ is the
-probability $$k$$ immunized subjects of $$N$$ subjects in
-total, under the condition of a parameter $$ \mu $$, which
-we'll write down as $$ \wp(N, k \mid \mu) $$. We identify,
-that his $$ \wp(N, k \mid \mu) $$ is the [binomial
-distribution](https://www.wikiwand.com/en/Binomial_distribution).
+The likelihood-function [^likelihood]: $$L(\mu \mid N, k)$$
+is the probability $$k$$ immunized subjects of $$N$$
+subjects in total, under the condition of a parameter $$ \mu
+$$, which we'll write down as $$ \wp(N, k \mid \mu) $$. We
+identify, that his $$ \wp(N, k \mid \mu) $$ is the
+[binomial distribution](https://www.wikiwand.com/en/Binomial_distribution).
 
 $$
 L(\mu) = \wp(N, k \mid \mu) = \text{Binomial}(k\mid N, \mu) = \binom N k  \mu^k(1-\mu)^{N-k}
@@ -441,12 +441,13 @@ blog post.
 [^likelihood]:
 
     It is often said, that the likelihood isn't a
-    probability (distribution), but some other function.
+    probability (distribution), but another kind of function.
     This isn't correct. The likelihood is a probability
     (distribution).  What people mean when they say it isn't
     a probability is, that they don't use it as a
-    probability
-    (distribution) in that context.
+    probability (distribution) in that context, but as a
+    function of some parameter, that is maximized (maximum
+    likelihood estimation).
 
 [^evidence]:
     It doesn't have a much of a canonical name. Calling it
