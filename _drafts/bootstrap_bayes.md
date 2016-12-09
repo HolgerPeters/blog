@@ -1,8 +1,8 @@
 ---
 layout: post
 category: 'Data-Science'
-date: '2016-12-04 21:30'
-modified: '2016-12-04 21:30'
+date: '2016-12-08 21:30'
+modified: '2016-12-08 21:30'
 status: draft
 tags:
  - data science
@@ -367,12 +367,30 @@ $$
 ## Data
 
 Using the above beta-prior model with our collected data, we
-can obtain an estimate for the rate using the expectancy of
-the posterior distribution.
+can obtain posterior distributions for the immunization
+rate. The following plot shows such distributions, adding
+more data with each subplot.
 
-$$
-\mathcal{E}\left[\mu \mid N, k\right] = \mu_{\text{Est}}
-$$
+![distributions](/assets/images/distributions.png)
+
+In the plot, we can follow along, how wit hmore data, the
+distribution gets narrower (i.e. with more data, we are more
+certain). The first subplot labelled $$ N= 0 $$ is the prior
+distribution.
+
+The infered value for the immunization rate, $$ \mu $$, is
+the expectancy value of these distributions (represented by
+the vertical black lines in the plot). For comparison, the
+red, dotted line is the true immunization rate, that we
+know, because we put it into the random number generator
+that provides us with the data set.
+
+We can see in the plots, that gradually our estimate
+changes, as the data fluctuates, although with many
+measurements it seems to stabilize. The learn curve is a
+good way to visualize this.
+
+# Learn curve for Bayes
 
 Pretending that we only perform one trial at a time, we can
 plot a learning curve that shows how our method performs and
