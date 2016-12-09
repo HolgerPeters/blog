@@ -286,7 +286,8 @@ The probabilities involved are:
 
   We also call this quantity the *posterior*.
 * $$\wp(D\mid M)$$ is the probability for data, given the
-  model. This is the *likelihood* [^likelihood].
+  model. This is the *likelihood* we have already seen above
+  [^likelihood].
 * $$\wp(M)$$ is the prior, a probability (distribution), that
   is independent of $$D$$.
 * $$\wp(D)$$ is the probability for data[^evidence]. For this
@@ -299,41 +300,37 @@ term, that involves the probability for data, given the
 model**.
 
 Why is this important? Because it is often much easier to
-come up with a likelihood, than to come up with the
-$$\wp(M\mid D)$$ directly.
-
+give an expression for the, than to come up with the
+posterior $$\wp(M\mid D)$$ directly.
 
 ## Bayesian Estimation of Immunization Rates
 
-The immunization rate that we are looking for is a
+The immunization rate $$\mu$$ that we are looking for is a
 probability (in the frequentist sense). Nevertheless, it is
-in the bayesian sense a model parameter $$ M $$, whose
-distribution can be inferred using Bayes' theorem.
+in the Bayesian sense also model parameter $$ M = \mu $$,
+whose probability distribution given data $$ \wp(\mu\mid
+D)$$ can be inferred using Bayes' theorem.  We would like to
+find the distribution for this parameter $$ \wp(\mu\mid D)
+$$, so that we can get an expectancy value $$\mathcal{E}[\mu
+\mid D]$$ and the variance.
 
-We assume, that the classification immunized vs.
-not-immunized is a Bernoulli-trial of a random variable
-$$x$$. The immunization rate $$\mu$$ is then a parameter of
-the Bernoulli distribution: $$\text{Bernoulli}(x\mid
-\mu)$$, and at the same time, it is our model, i.e.
-$$M=\mu$$, and we would like to find the distribution for
-this parameter $$ \wp(\mu\mid D) $$. Our inference problem
-can be solved if we can find an expression for the
-right-hand side of Bayes' theorem. First, we will ignore the
-denominator, which is more of a normalization parameter.
+Bayes rule gives us this distribution. First, we will ignore
+the denominator, which is more of a normalization parameter,
+without loss of generality, as
 
 $$
-\wp(\mu\mid D) \propto \wp(D \mid \mu) \wp(\mu)
+\wp(\mu\mid D) \propto \wp(D \mid \mu) \wp(\mu).
 $$
 
 What could $$\wp(D\mid \mu)$$ be? During the trial, we have
 $$k$$ observations of immunized subjects, out of $$N$$
-observations in total, so $$\wp(D\mid \mu)= \wp(N, k \mid
+observations in total, so $$\wp(D\mid \mu)= \wp(k \mid N,
 \mu)$$. Does the k-out-of-N sound familiar?  It is what the
 [Binomial distribution](http://en.wikipedia.org/wiki/Binomial distribution)
 describes
 
 $$
-\wp(N, k \mid \mu) \sim \text{Binomial}(k\mid N, \mu)
+\wp(N, k \mid \mu) \sim \text{Binomial}(k\mid N, \mu).
 $$
 
 Now we need a suitable expression for $$\wp(\mu)$$. It needs
@@ -341,11 +338,18 @@ to be a probability distribution that just contains the
 model alone (no data). This is a tough choice (and one of
 the main sources for distrust of the Bayesian methods,
 probably). Luckily, the Bayesian literature tells us, that
-the Beta-distribution is a suitable choice for this.
+the Beta-distribution is a suitable choice for this,
 
 $$
 \wp(M) \sim \text{Beta}(\mu\mid \alpha_0, \beta_0)
 $$
+
+and $$\alpha_0$$ and $$\beta_0$$ are the *a priori*
+parameters. Choosing $$\alpha_0=\beta_0=1$$ for example
+would assume a uniform prior distribution between $$0 \leq
+\mu \leq 1$$. I use $$\alpha_0=\beta_0=\frac{1}{2}$$
+[^jeffrey].
+
 
 ### Incremental updates
 
@@ -377,7 +381,7 @@ how the inference quality improves with more data:
 ![learn curve for bayes](/assets/images/learncurvebayes.png)
 
 
-# Learncurve for Boostrap
+# Learn curve for Boostrap
 
 We have plotted a learning curve for the Bayesian approach,
 how does the bootstrap method compare? Let's add a learn curve
@@ -457,3 +461,10 @@ blog post.
 [^prop]:
     A proposition is a statement that can either be true or
     false.
+
+[^jeffrey]:
+    The prior distribution $$ \text{Beta}\left(\mu \mid
+    \frac{1}{2}, \frac{1}{2}\right)$$ is called the
+    [Jeffreys prior](https://www.wikiwand.com/en/Jeffreys_prior).
+    Choice of priors would be the material for a series of
+    blog posts.
