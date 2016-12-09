@@ -23,7 +23,7 @@ Metaphorically, it is a custody trial to determine who may
 claim the interpretational sovereignty over nothing less
 than the *Theory of Probability*.
 
-frequentism and Bayesianism are both established approaches
+Frequentism and Bayesianism are both established approaches
 to statistics. Their differences start, with their core
 definitions. frequentism treats probabilities as ratios of
 frequency-counts collected from an infinite number of
@@ -168,11 +168,9 @@ expected as the naïve result.
 
 We can use the fact, that different subsets of our data
 yield different results, to get a better picture of the
-reliability / variance of our probabilities.
-
-Just like above, we will take a look at subsets of the total
-data set. However, this time we will take a systematic
-approach. We will
+reliability / variance of our probabilities.  Just like
+above, we will take a look at subsets of the total data set.
+This time we will take a systematic approach, we will
 
 * construct a new data sets from the recorded trials by
   randomized sampling with replacement. The new data set has
@@ -411,10 +409,8 @@ for the bootstrap method to the plot:
 
 What we can see here is, that with enough data points, both
 methods give very similar results, to the point where they
-seem equivalent.
-
-However the Bayesian approach is better when infering from
-fewer data points. Why is that?
+seem equivalent.  However, the Bayesian approach is better
+when infering from fewer data points. Why is that?
 
 * Bootstrap relies on constructing ad-hoc data-sets from the
   original samples. With few data points, it suffers from
