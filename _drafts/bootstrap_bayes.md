@@ -6,29 +6,31 @@ modified: '2016-12-08 21:30'
 status: draft
 tags:
  - data science
+ - bayes
 title: "Bayes'n'Bootstrap"
 ---
 
 With the advent of machine learning into our IT landscapes,
 a previously rather academic conflict of the statistical
-community is now often on stage. It is the question of
-*Frequentism* vs. *Bayesianism*. This debate, often one that
-is as emotional as the famous *editor-wars*, is in fact a
-very fundamental one that touches the foundations of
-statistics and probability theory. In that sense, it isn't
-your usual bike shedding discussion, even if it is sometimes
-lead as one. Metaphorically, it is a custody trial to
-determine who may claim the interpretational sovereignty
-over nothing less than the *Theory of Probability*.
+community surfaces in blogs and other forums of discussion
+every other week. It is the question of *frequentism* vs.
+*Bayesianism*. This debate, often one that is as emotional
+as the famous *editor-wars*, is in fact a very fundamental
+one that touches the foundations of statistics and
+probability theory. In that sense, it isn't your usual bike
+shedding discussion, even if it is sometimes lead as one.
+Metaphorically, it is a custody trial to determine who may
+claim the interpretational sovereignty over nothing less
+than the *Theory of Probability*.
 
-In a nutshell, frequentism and Bayesianism are both
-established approaches to statistics. Their differences
-start, with their core definitions. Frequentism treats
-probabilities as ratios of frequency-counts collected from
-an infinite number of trials; and frequentist practitioners
-will tell you that a finite number of trials will also
-suffice (as in: from 100 coin flips, 50 times we will obtain
-*head*, thus the probability for head is $$\wp(H=1)=0.5$$).
+frequentism and Bayesianism are both established approaches
+to statistics. Their differences start, with their core
+definitions. frequentism treats probabilities as ratios of
+frequency-counts collected from an infinite number of
+trials; and frequentist practitioners will tell you that a
+finite number of trials will also suffice (as in: from 100
+coin flips, 50 times we will obtain *head*, thus the
+probability for head is $$\wp(H=1)=0.5$$).
 
 For Bayesianists, probabilities are **degrees of belief**;
 also Bayesianists use Bayes' theorem for inference.  A
@@ -47,7 +49,7 @@ understand much of the criticism either method faces:
 
 * Bayesian probabilities are criticised as "subjective" or
   as not a genuine measurement parameter (degree of belief).
-* Frequentist probabilities are said to be limited to
+* frequentist probabilities are said to be limited to
   infinitely repeatable trials, and thus not applicable to
   any real world data set, with a finite number of
   measurements.
@@ -257,7 +259,7 @@ $$
 \wp(A\mid B) = \frac{\wp(B \mid A)}{\wp(B)} \wp(A)
 $$
 
-Until now, *I think*, Frequentists and Bayesianists can
+Until now, *I think*, frequentists and Bayesianists can
 agree. The disagreement starts on when and how to use this
 equation. Bayesianists infer (conclude) $$ \wp(A\mid B) $$
 on the left side of the equation from the right hand side.
@@ -441,11 +443,11 @@ statistical fluctuations).
 There are many conclusions that one can draw from this
 simple example. Of course not everything that we can learn
 from this example generalize to all questions about Bayes
-and Frequentism. So I'll limit my conclusion here to the
+and frequentism. So I'll limit my conclusion here to the
 one very simple advice: I learned a lot more about
 statistical methods and algorithms by constantly looking at
-how Bayesianists and Frequentists approach and derive them.
-Most statistical topics are treated in bayesian and
+how Bayesianists and frequentists approach and derive them.
+Most statistical topics are treated in Bayesian and
 frequentist literature.
 
 # Notes
