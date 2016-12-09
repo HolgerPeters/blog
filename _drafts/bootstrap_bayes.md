@@ -124,7 +124,7 @@ approach. We will
 ### Distribution of Rates in Subsample
 
 The histogram below was made from a sample of 100
-measurements, drawing many (100000) subsamples of 90
+measurements, drawing many (100000) subsamples of 100
 measurements, from which the rates were calculated.
 
 
