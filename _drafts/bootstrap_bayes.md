@@ -354,8 +354,17 @@ statistical fluctuations).
 # Conclusion
 
 
+# Notes
 
-# Footnotes
+Thank you Christopher and Daniel for your feedback on this
+blog post.
+
+## Further Reading
+
+* [The Non-parametric Bootstrap as a Bayesian Model](http://www.sumsar.net/blog/2015/04/the-non-parametric-bootstrap-as-a-bayesian-model/)
+  by Rasmus Bååth
+
+## Footnotes
 
 [^likelihood]:
 
