@@ -1,7 +1,9 @@
-title: Blog of Holger Peters
+title: Data Voyage - Blog of Holger Peters
 email: email@holger-peters.de
 description: > # this means to ignore newlines until "baseurl:"
-  A blog on programming, data-science and everything else that interests me.
+    A personal blog on all things data-science and software
+    engineering, with the occasional endeavours in functional
+    programming
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.holger-peters.de"
 twitter_username: data_hope
