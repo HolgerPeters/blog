@@ -8,15 +8,15 @@ title: Optimizing for secondary virtues
 ---
 
 When your environment claims or strives to be agile, you
-will probably stumble over an interesting pattern:
-Many people people who identifiy with the agile approach,
-will also give you simple, straightforward advice (or
-rule-like guidelines) on how you can be agile. Such advice
-typically revolves around things like sprint-lengths (god
-forbid if they are longer than two weeks), the stand-up
-meeting (everyone should be there, and it should be < 15
-minutes), or the a kanban/task board (each day you should
-see some movement there).
+will probably stumble over an interesting pattern: Many
+people who identifiy with the agile approach, will also give
+you simple, straightforward advice (or rule-like guidelines)
+on how you can be agile. Such advice typically revolves
+around things like sprint-lengths (god forbid if they are
+longer than two weeks), the stand-up meeting (everyone
+should be there, and it should be < 15 minutes), or the
+kanban/task board (each day you should see some movement
+there).
 
 What you typically do not hear (at least so infrequent that
 it isn't worth mentioning) are quotes from the agile
